@@ -1,9 +1,262 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
-  <title>Pezzali Hub</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PezzaliHub</title>
+  <meta name="description" content="PezzaliHub raccoglie app, strumenti e PWA create per lavorare meglio, più velocemente e con meno frizioni." />
+  <meta name="theme-color" content="#f5f5f7" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+      background: #f5f5f7;
+      color: #1d1d1f;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 22px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1180px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .logo {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .tag {
+      font-size: 13px;
+      color: #6e6e73;
+    }
+
+    main {
+      flex: 1;
+      max-width: 1180px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 70px 24px 50px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 60px 0 80px;
+    }
+
+    .eyebrow {
+      font-size: 15px;
+      color: #6e6e73;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-size: clamp(48px, 8vw, 92px);
+      line-height: 0.95;
+      letter-spacing: -0.07em;
+      margin: 0;
+      font-weight: 800;
+    }
+
+    .subtitle {
+      max-width: 680px;
+      margin: 28px auto 0;
+      font-size: clamp(20px, 3vw, 30px);
+      line-height: 1.25;
+      color: #6e6e73;
+      letter-spacing: -0.03em;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 28px;
+      min-height: 210px;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.06);
+      transition: transform .2s ease, box-shadow .2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 28px 80px rgba(0,0,0,0.10);
+    }
+
+    .icon {
+      font-size: 34px;
+      margin-bottom: 18px;
+    }
+
+    .card h2 {
+      margin: 0;
+      font-size: 26px;
+      letter-spacing: -0.04em;
+    }
+
+    .card p {
+      margin: 12px 0 0;
+      color: #6e6e73;
+      line-height: 1.45;
+      font-size: 15px;
+    }
+
+    .status {
+      margin-top: 24px;
+      font-size: 13px;
+      color: #86868b;
+    }
+
+    .wide {
+      grid-column: span 2;
+      background: #1d1d1f;
+      color: white;
+    }
+
+    .wide p,
+    .wide .status {
+      color: #c7c7cc;
+    }
+
+    footer {
+      max-width: 1180px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 30px 24px 45px;
+      color: #86868b;
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 850px) {
+      main {
+        padding-top: 35px;
+      }
+
+      .hero {
+        padding: 40px 0 50px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .wide {
+        grid-column: span 1;
+      }
+
+      header {
+        padding: 20px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-  <h1>Pezzali Hub 🚀</h1>
+  <div class="page">
+    <header>
+      <div class="logo">PezzaliHub</div>
+      <div class="tag">App. PWA. Idee operative.</div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="eyebrow">PezzaliAPP ecosystem</div>
+        <h1>Le mie app.<br>Dirette.</h1>
+        <p class="subtitle">
+          Un hub essenziale per raccogliere strumenti digitali, PWA e progetti creati per semplificare lavoro, assistenza, dati e decisioni.
+        </p>
+      </section>
+
+      <section class="grid">
+        <a class="card wide" href="https://www.alessandropezzali.it/" target="_blank">
+          <div>
+            <div class="icon">◼︎</div>
+            <h2>PezzaliAPP</h2>
+            <p>La casa principale dell’ecosistema: strumenti utili, progetti aperti e app pensate per risolvere problemi reali.</p>
+          </div>
+          <div class="status">Vai al sito principale →</div>
+        </a>
+
+        <a class="card" href="https://www.alessandropezzali.it/CheckappExcel/" target="_blank">
+          <div>
+            <div class="icon">📊</div>
+            <h2>CheckappExcel</h2>
+            <p>Controllo, confronto e gestione dati in modo rapido e operativo.</p>
+          </div>
+          <div class="status">Apri app →</div>
+        </a>
+
+        <a class="card" href="https://www.alessandropezzali.it/triagefirst/" target="_blank">
+          <div>
+            <div class="icon">✚</div>
+            <h2>TriageFirst</h2>
+            <p>PWA sperimentale per orientamento e triage informativo.</p>
+          </div>
+          <div class="status">Apri app →</div>
+        </a>
+
+        <a class="card" href="https://www.alessandropezzali.it/djapp/" target="_blank">
+          <div>
+            <div class="icon">♪</div>
+            <h2>djApp</h2>
+            <p>Console DJ browser-based, installabile e pensata per l’uso immediato.</p>
+          </div>
+          <div class="status">Apri app →</div>
+        </a>
+
+        <a class="card" href="https://www.alessandropezzali.it/TechAssist-AI-by-PezzaliApp/" target="_blank">
+          <div>
+            <div class="icon">⚙︎</div>
+            <h2>TechAssist AI</h2>
+            <p>Supporto tecnico e procedure operative per assistenza e configurazione.</p>
+          </div>
+          <div class="status">Apri app →</div>
+        </a>
+
+        <a class="card" href="https://www.alessandropezzali.it/CSVXpressSmart/" target="_blank">
+          <div>
+            <div class="icon">⌁</div>
+            <h2>CSVXpressSmart</h2>
+            <p>Strumenti per listini, margini, preventivi e analisi commerciale.</p>
+          </div>
+          <div class="status">Apri app →</div>
+        </a>
+      </section>
+    </main>
+
+    <footer>
+      <div>© 2026 PezzaliHub</div>
+      <div>Keep it simple.</div>
+    </footer>
+  </div>
 </body>
 </html>
