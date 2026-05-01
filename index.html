@@ -1,531 +1,181 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>PezzaliHub</title>
-  <meta name="description" content="Launcher PWA per le app dell'ecosistema PezzaliAPP." />
-  <meta name="theme-color" content="#f5f5f7" />
-  <link rel="manifest" href="manifest.json" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PezzaliHub</title>
 
-  <style>
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+<style>
+body {
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:#f5f5f7;
+  color:#1d1d1f;
+}
 
-    :root {
-      --bg: #f5f5f7;
-      --card: rgba(255,255,255,.78);
-      --text: #1d1d1f;
-      --muted: #6e6e73;
-      --line: rgba(0,0,0,.08);
-      --shadow: 0 18px 50px rgba(0,0,0,.08);
-      --radius: 28px;
-    }
+header{
+  padding:20px;
+  text-align:center;
+  font-weight:600;
+  font-size:20px;
+}
 
-    body.dark {
-      --bg: #0b0b0f;
-      --card: rgba(28,28,32,.76);
-      --text: #f5f5f7;
-      --muted: #a1a1a6;
-      --line: rgba(255,255,255,.10);
-      --shadow: 0 18px 50px rgba(0,0,0,.35);
-    }
+.search{
+  max-width:600px;
+  margin:0 auto 20px;
+  padding:0 20px;
+}
 
-    html { scroll-behavior: smooth; }
+.search input{
+  width:100%;
+  padding:14px;
+  border-radius:12px;
+  border:1px solid #ddd;
+  font-size:16px;
+}
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(255,255,255,.9), transparent 32%),
-        var(--bg);
-      color: var(--text);
-      transition: background .25s ease, color .25s ease;
-    }
+.filters{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+}
 
-    .shell {
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 24px;
-    }
+.filters button{
+  padding:8px 14px;
+  border-radius:20px;
+  border:none;
+  background:#e5e5ea;
+  cursor:pointer;
+}
 
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 30;
-      backdrop-filter: blur(22px);
-      -webkit-backdrop-filter: blur(22px);
-      background: color-mix(in srgb, var(--bg) 82%, transparent);
-      border-bottom: 1px solid var(--line);
-    }
+.filters button.active{
+  background:#1d1d1f;
+  color:white;
+}
 
-    .topbar {
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 16px 24px;
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      justify-content: space-between;
-    }
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+  gap:16px;
+  padding:20px;
+  max-width:1000px;
+  margin:auto;
+}
 
-    .brand {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
+.card{
+  background:white;
+  border-radius:18px;
+  padding:16px;
+  text-align:center;
+  text-decoration:none;
+  color:inherit;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+  transition:.2s;
+}
 
-    .brand strong {
-      font-size: 22px;
-      letter-spacing: -.05em;
-    }
+.card:hover{
+  transform:translateY(-4px);
+}
 
-    .brand span {
-      font-size: 13px;
-      color: var(--muted);
-    }
+.icon{
+  font-size:30px;
+  margin-bottom:10px;
+}
 
-    .actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    button {
-      border: 0;
-      cursor: pointer;
-      font: inherit;
-    }
-
-    .pill {
-      border-radius: 999px;
-      padding: 10px 14px;
-      background: var(--card);
-      color: var(--text);
-      border: 1px solid var(--line);
-      box-shadow: 0 8px 24px rgba(0,0,0,.05);
-    }
-
-    .hero {
-      padding: 34px 0 22px;
-    }
-
-    .hero h1 {
-      margin: 0;
-      font-size: clamp(34px, 6vw, 68px);
-      line-height: .96;
-      letter-spacing: -.07em;
-      max-width: 760px;
-    }
-
-    .hero p {
-      margin: 18px 0 0;
-      color: var(--muted);
-      font-size: clamp(17px, 2.2vw, 23px);
-      line-height: 1.35;
-      max-width: 720px;
-      letter-spacing: -.03em;
-    }
-
-    .search-wrap {
-      margin-top: 26px;
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .search {
-      flex: 1;
-      min-width: 230px;
-      position: relative;
-    }
-
-    .search input {
-      width: 100%;
-      border: 1px solid var(--line);
-      background: var(--card);
-      color: var(--text);
-      border-radius: 22px;
-      padding: 16px 18px 16px 46px;
-      font-size: 16px;
-      outline: none;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-    }
-
-    .search::before {
-      content: "⌕";
-      position: absolute;
-      left: 18px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--muted);
-      font-size: 22px;
-      z-index: 1;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding: 8px 0 4px;
-      scrollbar-width: none;
-    }
-
-    .tabs::-webkit-scrollbar { display: none; }
-
-    .tab {
-      white-space: nowrap;
-      border-radius: 999px;
-      padding: 10px 14px;
-      background: transparent;
-      color: var(--muted);
-      border: 1px solid var(--line);
-    }
-
-    .tab.active {
-      background: var(--text);
-      color: var(--bg);
-      border-color: transparent;
-    }
-
-    .section-title {
-      margin: 28px 0 14px;
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .section-title h2 {
-      margin: 0;
-      font-size: 22px;
-      letter-spacing: -.04em;
-    }
-
-    .section-title span {
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 18px;
-    }
-
-    .app {
-      min-height: 150px;
-      text-decoration: none;
-      color: inherit;
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 18px;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(22px);
-      -webkit-backdrop-filter: blur(22px);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transform: translateY(10px);
-      opacity: 0;
-      animation: up .45s ease forwards;
-      transition: transform .18s ease, box-shadow .18s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .app:hover {
-      transform: translateY(-5px) scale(1.015);
-      box-shadow: 0 26px 70px rgba(0,0,0,.13);
-    }
-
-    .app:active {
-      transform: scale(.98);
-    }
-
-    .icon {
-      width: 54px;
-      height: 54px;
-      border-radius: 17px;
-      display: grid;
-      place-items: center;
-      font-size: 26px;
-      background: linear-gradient(145deg, rgba(255,255,255,.95), rgba(230,230,235,.9));
-      color: #1d1d1f;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 10px 24px rgba(0,0,0,.08);
-    }
-
-    body.dark .icon {
-      background: linear-gradient(145deg, #303036, #19191d);
-      color: #fff;
-    }
-
-    .app h3 {
-      margin: 14px 0 5px;
-      font-size: 18px;
-      letter-spacing: -.04em;
-    }
-
-    .app p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.32;
-    }
-
-    .badge {
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      font-size: 11px;
-      color: var(--muted);
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      padding: 4px 8px;
-      background: rgba(255,255,255,.28);
-    }
-
-    .empty {
-      display: none;
-      text-align: center;
-      color: var(--muted);
-      padding: 40px 0;
-    }
-
-    footer {
-      padding: 36px 0 20px;
-      color: var(--muted);
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      flex-wrap: wrap;
-      font-size: 13px;
-    }
-
-    @keyframes up {
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    @media (max-width: 1050px) {
-      .grid { grid-template-columns: repeat(4, 1fr); }
-    }
-
-    @media (max-width: 720px) {
-      .shell { padding: 18px; }
-      .topbar { padding: 14px 18px; }
-      .grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
-      .app { min-height: 142px; padding: 16px; border-radius: 24px; }
-      .brand span { display: none; }
-      .pill { padding: 9px 12px; }
-    }
-
-    @media (max-width: 390px) {
-      .grid { grid-template-columns: 1fr; }
-    }
-  </style>
+.name{
+  font-size:14px;
+  font-weight:500;
+}
+</style>
 </head>
 
 <body>
-  <header>
-    <div class="topbar">
-      <div class="brand">
-        <strong>PezzaliHub</strong>
-        <span>Launcher PWA per strumenti operativi</span>
-      </div>
-      <div class="actions">
-        <button class="pill" id="installBtn" hidden>Installa</button>
-        <button class="pill" id="themeBtn">◐</button>
-      </div>
-    </div>
-  </header>
 
-  <main class="shell">
-    <section class="hero">
-      <h1>Tutte le app.<br>Un solo gesto.</h1>
-      <p>Un launcher essenziale per aprire rapidamente strumenti, PWA e progetti dell’ecosistema PezzaliAPP.</p>
+<header>PezzaliHub</header>
 
-      <div class="search-wrap">
-        <div class="search">
-          <input id="searchInput" type="search" placeholder="Cerca app, funzione o progetto..." autocomplete="off" />
-        </div>
-      </div>
+<div class="search">
+  <input id="search" placeholder="Cerca app..." />
+</div>
 
-      <div class="tabs" id="tabs">
-        <button class="tab active" data-filter="all">Tutte</button>
-        <button class="tab" data-filter="commerciale">Commerciale</button>
-        <button class="tab" data-filter="ai">AI</button>
-        <button class="tab" data-filter="utility">Utility</button>
-        <button class="tab" data-filter="creative">Creative</button>
-      </div>
-    </section>
+<div class="filters">
+  <button data-cat="all" class="active">Tutte</button>
+  <button data-cat="commerciale">Commerciale</button>
+  <button data-cat="ai">AI</button>
+  <button data-cat="utility">Utility</button>
+  <button data-cat="lab">Lab</button>
+</div>
 
-    <section>
-      <div class="section-title">
-        <h2>Launcher</h2>
-        <span id="countLabel"></span>
-      </div>
+<div class="grid" id="grid"></div>
 
-      <div class="grid" id="appGrid"></div>
-      <div class="empty" id="emptyState">Nessuna app trovata.</div>
-    </section>
+<script>
 
-    <footer>
-      <div>© 2026 PezzaliHub</div>
-      <div>Keep it simple.</div>
-    </footer>
-  </main>
+const apps = [
 
-  <script>
-    const apps = [
-      {
-        name: "PezzaliAPP",
-        desc: "Sito principale dell’ecosistema.",
-        icon: "◼︎",
-        url: "https://www.alessandropezzali.it/",
-        tags: ["utility"]
-      },
-      {
-        name: "CheckappExcel",
-        desc: "Controllo e confronto dati operativo.",
-        icon: "📊",
-        url: "https://www.alessandropezzali.it/CheckappExcel/",
-        tags: ["commerciale", "utility"]
-      },
-      {
-        name: "CSVXpressSmart",
-        desc: "Listini, margini e analisi commerciale.",
-        icon: "⌁",
-        url: "https://www.alessandropezzali.it/CSVXpressSmart/",
-        tags: ["commerciale"]
-      },
-      {
-        name: "TechAssist AI",
-        desc: "Procedure e supporto tecnico assistito.",
-        icon: "⚙︎",
-        url: "https://www.alessandropezzali.it/TechAssist-AI-by-PezzaliApp/",
-        tags: ["ai", "utility"]
-      },
-      {
-        name: "TriageFirst",
-        desc: "PWA sperimentale di triage informativo.",
-        icon: "✚",
-        url: "https://www.alessandropezzali.it/triagefirst/",
-        tags: ["ai", "utility"]
-      },
-      {
-        name: "djApp",
-        desc: "Console DJ browser-based.",
-        icon: "♪",
-        url: "https://www.alessandropezzali.it/djapp/",
-        tags: ["creative"]
-      },
-      {
-        name: "QuoteFlow Pro",
-        desc: "Preventivi e flussi commerciali.",
-        icon: "◆",
-        url: "https://www.alessandropezzali.it/quoteflow-pro-cascos/",
-        tags: ["commerciale", "ai"]
-      },
-      {
-        name: "ListinoHub",
-        desc: "Accesso rapido a listini e strumenti.",
-        icon: "▦",
-        url: "https://www.alessandropezzali.it/ListinoHub/",
-        tags: ["commerciale"]
-      }
-    ];
+/* BUSINESS */
+{ name:"CSVXpressSmart", cat:"commerciale", url:"https://www.alessandropezzali.it/CSVXpressSmart/", icon:"📊" },
+{ name:"CheckappExcel", cat:"commerciale", url:"https://www.alessandropezzali.it/CheckappExcel/", icon:"📈" },
+{ name:"PriceXpress", cat:"commerciale", url:"#", icon:"💰" },
+{ name:"CRM-PWA", cat:"commerciale", url:"#", icon:"📋" },
 
-    const grid = document.getElementById("appGrid");
-    const searchInput = document.getElementById("searchInput");
-    const tabs = document.querySelectorAll(".tab");
-    const countLabel = document.getElementById("countLabel");
-    const emptyState = document.getElementById("emptyState");
+/* AI */
+{ name:"TechAssist AI", cat:"ai", url:"https://www.alessandropezzali.it/TechAssist-AI-by-PezzaliApp/", icon:"⚙️" },
+{ name:"TriageFirst", cat:"ai", url:"https://www.alessandropezzali.it/triagefirst/", icon:"🧠" },
 
-    let activeFilter = "all";
+/* UTILITY */
+{ name:"djApp", cat:"utility", url:"https://www.alessandropezzali.it/djapp/", icon:"🎧" },
 
-    function render() {
-      const q = searchInput.value.toLowerCase().trim();
+/* LAB */
+{ name:"Quantum Lab", cat:"lab", url:"#", icon:"⚛️" }
 
-      const filtered = apps.filter(app => {
-        const matchText =
-          app.name.toLowerCase().includes(q) ||
-          app.desc.toLowerCase().includes(q) ||
-          app.tags.join(" ").toLowerCase().includes(q);
+];
 
-        const matchFilter = activeFilter === "all" || app.tags.includes(activeFilter);
-        return matchText && matchFilter;
-      });
+let currentCat = "all";
 
-      grid.innerHTML = "";
-      countLabel.textContent = `${filtered.length} app`;
+const grid = document.getElementById("grid");
+const search = document.getElementById("search");
 
-      filtered.forEach((app, index) => {
-        const a = document.createElement("a");
-        a.href = app.url;
-        a.target = "_blank";
-        a.className = "app";
-        a.style.animationDelay = `${index * 45}ms`;
-        a.innerHTML = `
-          <span class="badge">${app.tags[0]}</span>
-          <div>
-            <div class="icon">${app.icon}</div>
-            <h3>${app.name}</h3>
-            <p>${app.desc}</p>
-          </div>
-        `;
-        grid.appendChild(a);
-      });
+function render(){
+  const q = search.value.toLowerCase();
 
-      emptyState.style.display = filtered.length ? "none" : "block";
-    }
+  grid.innerHTML = "";
 
-    searchInput.addEventListener("input", render);
+  apps
+    .filter(a =>
+      (currentCat === "all" || a.cat === currentCat) &&
+      a.name.toLowerCase().includes(q)
+    )
+    .forEach(a => {
 
-    tabs.forEach(tab => {
-      tab.addEventListener("click", () => {
-        tabs.forEach(t => t.classList.remove("active"));
-        tab.classList.add("active");
-        activeFilter = tab.dataset.filter;
-        render();
-      });
+      const el = document.createElement("a");
+      el.href = a.url;
+      el.target="_blank";
+      el.className="card";
+
+      el.innerHTML = `
+        <div class="icon">${a.icon}</div>
+        <div class="name">${a.name}</div>
+      `;
+
+      grid.appendChild(el);
     });
+}
 
-    const themeBtn = document.getElementById("themeBtn");
-    const savedTheme = localStorage.getItem("pezzalihub-theme");
+search.addEventListener("input", render);
 
-    if (savedTheme === "dark") document.body.classList.add("dark");
-
-    themeBtn.addEventListener("click", () => {
-      document.body.classList.toggle("dark");
-      localStorage.setItem("pezzalihub-theme", document.body.classList.contains("dark") ? "dark" : "light");
-    });
-
-    let deferredPrompt;
-    const installBtn = document.getElementById("installBtn");
-
-    window.addEventListener("beforeinstallprompt", (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      installBtn.hidden = false;
-    });
-
-    installBtn.addEventListener("click", async () => {
-      if (!deferredPrompt) return;
-      deferredPrompt.prompt();
-      await deferredPrompt.userChoice;
-      deferredPrompt = null;
-      installBtn.hidden = true;
-    });
-
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("sw.js").catch(() => {});
-    }
-
+document.querySelectorAll(".filters button").forEach(btn=>{
+  btn.onclick = () => {
+    document.querySelectorAll(".filters button").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    currentCat = btn.dataset.cat;
     render();
-  </script>
+  }
+});
+
+render();
+
+</script>
+
 </body>
 </html>
