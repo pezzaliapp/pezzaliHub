@@ -1,22 +1,31 @@
 {
-  "name": "PezzaliHub",
+  "name": "PezzaliHub — Ecosistema PezzaliAPP",
   "short_name": "PezzaliHub",
-  "description": "Launcher PWA per le app dell'ecosistema PezzaliAPP.",
+  "description": "77 app web per officine, vendite, AI, musica, scienza. Tutto nel browser.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#f5f5f7",
-  "theme_color": "#f5f5f7",
+  "orientation": "any",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "lang": "it",
+  "categories": [
+    "productivity",
+    "business",
+    "utilities"
+  ],
   "icons": [
     {
       "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }

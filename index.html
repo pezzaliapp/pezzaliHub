@@ -2,100 +2,994 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PezzaliHub</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>PezzaliHub — L'ecosistema di Alessandro Pezzali</title>
+<meta name="description" content="77 strumenti, app e PWA per officine, vendite, AI, musica, scienza. Tutto nel browser, zero installazioni.">
+<meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="PezzaliHub">
+<meta property="og:description" content="77 strumenti, app e PWA per il tuo lavoro.">
+<meta property="og:url" content="https://pezzalihub.app">
+<meta property="og:type" content="website">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <style>
-body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,sans-serif;
-  background:#f5f5f7;
-  color:#1d1d1f;
-}
+  /* ============ APPLE STYLE FOUNDATION ============ */
+  :root {
+    --bg: #ffffff;
+    --bg-alt: #f5f5f7;
+    --bg-card: #ffffff;
+    --bg-section: #fbfbfd;
+    --bg-hero: #000000;
+    --text: #1d1d1f;
+    --text-secondary: #515154;
+    --text-tertiary: #86868b;
+    --text-on-dark: #f5f5f7;
+    --text-on-dark-dim: #a1a1a6;
+    --border: #d2d2d7;
+    --border-light: #e8e8ed;
+    --link: #0066cc;
+    --link-hover: #0052a3;
+    --accent: #0071e3;
+    --accent-hover: #0077ed;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    --radius-xl: 28px;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.10);
+    --nav-h: 48px;
+  }
 
-header{
-  padding:20px;
-  font-weight:600;
-  font-size:20px;
-}
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #000000;
+      --bg-alt: #161617;
+      --bg-card: #1d1d1f;
+      --bg-section: #0a0a0a;
+      --text: #f5f5f7;
+      --text-secondary: #a1a1a6;
+      --text-tertiary: #6e6e73;
+      --border: #2c2c2e;
+      --border-light: #1f1f21;
+      --link: #2997ff;
+      --link-hover: #5eb1ff;
+      --accent: #2997ff;
+      --accent-hover: #5eb1ff;
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.7);
+    }
+  }
 
-.container{
-  max-width:1100px;
-  margin:auto;
-  padding:20px;
-}
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+                 "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.47;
+    letter-spacing: -0.022em;
+    font-size: 17px;
+  }
 
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
-  gap:16px;
-}
+  a { color: var(--link); text-decoration: none; transition: color 0.15s ease; }
+  a:hover { color: var(--link-hover); }
 
-.card{
-  background:white;
-  border-radius:16px;
-  padding:20px;
-  text-decoration:none;
-  color:inherit;
-  box-shadow:0 5px 15px rgba(0,0,0,0.05);
-  transition:0.2s;
-}
+  button { font-family: inherit; cursor: pointer; border: none; background: none; }
 
-.card:hover{
-  transform:translateY(-3px);
-}
+  /* ============ NAV BAR (Apple-style sticky) ============ */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(245, 245, 247, 0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    height: var(--nav-h);
+    border-bottom: 1px solid var(--border-light);
+  }
+  @media (prefers-color-scheme: dark) {
+    .nav { background: rgba(22, 22, 23, 0.72); }
+  }
+  .nav-inner {
+    max-width: 1024px;
+    margin: 0 auto;
+    height: 100%;
+    padding: 0 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-brand {
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+  .nav-brand:hover { color: var(--text); }
+  .nav-links {
+    display: flex;
+    gap: 24px;
+    font-size: 12px;
+    font-weight: 400;
+  }
+  .nav-links a {
+    color: var(--text);
+    opacity: 0.8;
+    transition: opacity 0.15s;
+  }
+  .nav-links a:hover { opacity: 1; }
+  @media (max-width: 720px) {
+    .nav-links { display: none; }
+  }
 
-.title{
-  font-weight:600;
-  margin-top:10px;
-}
+  /* ============ HERO ============ */
+  .hero {
+    background: var(--bg-hero);
+    color: var(--text-on-dark);
+    text-align: center;
+    padding: 80px 22px 40px;
+    overflow: hidden;
+    position: relative;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 0%, rgba(41, 151, 255, 0.18), transparent),
+      radial-gradient(ellipse 80% 50% at 50% 100%, rgba(255, 100, 200, 0.08), transparent);
+    pointer-events: none;
+  }
+  .hero-inner { position: relative; max-width: 980px; margin: 0 auto; }
+  .hero-eyebrow {
+    font-size: 19px;
+    color: #a1a1a6;
+    margin-bottom: 12px;
+    font-weight: 400;
+  }
+  .hero-title {
+    font-size: clamp(40px, 8vw, 80px);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+    margin-bottom: 16px;
+    background: linear-gradient(180deg, #ffffff 30%, #a1a1a6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-sub {
+    font-size: clamp(19px, 3vw, 28px);
+    font-weight: 400;
+    color: #f5f5f7;
+    letter-spacing: -0.015em;
+    max-width: 740px;
+    margin: 0 auto 28px;
+    line-height: 1.3;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .btn-primary, .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 22px;
+    border-radius: 980px;
+    font-size: 17px;
+    font-weight: 400;
+    transition: all 0.2s ease;
+    letter-spacing: -0.01em;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+  }
+  .btn-primary:hover {
+    background: var(--accent-hover);
+    color: white;
+    transform: scale(1.02);
+  }
+  .btn-secondary {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+  }
+  .btn-secondary:hover {
+    background: rgba(41, 151, 255, 0.1);
+    color: var(--accent);
+  }
+  .hero .btn-secondary {
+    color: #2997ff;
+    border-color: #2997ff;
+  }
 
-.desc{
-  font-size:13px;
-  color:#6e6e73;
-}
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 56px;
+    margin-top: 56px;
+    flex-wrap: wrap;
+  }
+  .hero-stat-num {
+    font-size: 56px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    background: linear-gradient(180deg, #ffffff 0%, #a1a1a6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-stat-label {
+    font-size: 15px;
+    color: #a1a1a6;
+    margin-top: 6px;
+  }
+
+  /* ============ SECTIONS ============ */
+  section {
+    padding: 80px 22px;
+  }
+  section.tight { padding: 56px 22px; }
+  .section-inner {
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+  .section-title {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.08;
+    text-align: center;
+    margin-bottom: 14px;
+  }
+  .section-sub {
+    font-size: 19px;
+    color: var(--text-secondary);
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 48px;
+    line-height: 1.4;
+  }
+
+  /* ============ FEATURED (3 large cards) ============ */
+  .featured {
+    background: var(--bg-section);
+  }
+  .featured-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+  }
+  .featured-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-xl);
+    padding: 36px 32px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column;
+    min-height: 380px;
+  }
+  .featured-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+  .featured-eyebrow {
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .featured-name {
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+  .featured-desc {
+    font-size: 17px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    margin-bottom: auto;
+    padding-bottom: 24px;
+  }
+  .featured-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .featured-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    color: var(--accent);
+    font-size: 17px;
+    font-weight: 400;
+  }
+  .featured-link:hover { color: var(--accent-hover); }
+  .featured-link.secondary {
+    color: var(--text-secondary);
+    font-size: 14px;
+  }
+
+  /* ============ SEARCH BAR ============ */
+  .search-section {
+    background: var(--bg);
+    padding: 56px 22px 24px;
+  }
+  .search-wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .search-input {
+    width: 100%;
+    background: var(--bg-alt);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 14px 50px 14px 48px;
+    font-size: 17px;
+    color: var(--text);
+    font-family: inherit;
+    transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+  }
+  .search-input::placeholder { color: var(--text-tertiary); }
+  .search-input:focus {
+    outline: none;
+    background: var(--bg-card);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.12);
+  }
+  .search-icon {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-tertiary);
+    pointer-events: none;
+  }
+  .search-clear {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-tertiary);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: var(--border);
+  }
+  .search-clear.visible { display: flex; }
+  .search-clear:hover { color: var(--text); }
+
+  /* ============ CATEGORY NAV ============ */
+  .cat-nav {
+    background: var(--bg);
+    padding: 24px 22px 32px;
+    position: sticky;
+    top: var(--nav-h);
+    z-index: 90;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--border-light);
+  }
+  @media (prefers-color-scheme: dark) {
+    .cat-nav { background: rgba(0, 0, 0, 0.72); }
+  }
+  .cat-nav-inner {
+    max-width: 1024px;
+    margin: 0 auto;
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 4px 0;
+  }
+  .cat-nav-inner::-webkit-scrollbar { display: none; }
+
+  .cat-pill {
+    flex-shrink: 0;
+    padding: 7px 14px;
+    border-radius: 980px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: var(--bg-alt);
+    border: 1px solid transparent;
+    transition: all 0.15s ease;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .cat-pill:hover {
+    background: var(--border-light);
+    color: var(--text);
+  }
+  .cat-pill.active {
+    background: var(--text);
+    color: var(--bg);
+  }
+  .cat-pill-count {
+    font-size: 11px;
+    opacity: 0.6;
+  }
+
+  /* ============ APP GRID ============ */
+  .apps-section {
+    padding: 32px 22px 80px;
+  }
+  .cat-block { margin-bottom: 64px; }
+  .cat-block:last-child { margin-bottom: 0; }
+
+  .cat-header {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-light);
+  }
+  .cat-header h2 {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .cat-header-emoji { font-size: 26px; }
+  .cat-header-tagline {
+    font-size: 15px;
+    color: var(--text-secondary);
+  }
+  .cat-header-count {
+    font-size: 13px;
+    color: var(--text-tertiary);
+    font-weight: 400;
+    margin-left: auto;
+  }
+  .cat-header-row {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .app-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+
+  .app-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .app-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--border);
+  }
+
+  .app-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .app-name {
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.018em;
+    color: var(--text);
+    word-break: break-word;
+    line-height: 1.2;
+    flex: 1;
+  }
+  .app-date {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    flex-shrink: 0;
+    padding-top: 4px;
+    font-feature-settings: "tnum";
+    white-space: nowrap;
+  }
+
+  .app-desc {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.45;
+    flex: 1;
+  }
+  .app-desc.empty {
+    color: var(--text-tertiary);
+    font-style: italic;
+  }
+
+  .app-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: auto;
+  }
+  .app-action {
+    flex: 1;
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+  }
+  .app-action.primary {
+    background: var(--accent);
+    color: white;
+  }
+  .app-action.primary:hover {
+    background: var(--accent-hover);
+    color: white;
+  }
+  .app-action.secondary {
+    background: var(--bg-alt);
+    color: var(--text);
+    border: 1px solid var(--border-light);
+  }
+  .app-action.secondary:hover {
+    background: var(--border-light);
+    color: var(--text);
+  }
+  .app-action.ghost {
+    background: transparent;
+    color: var(--text-secondary);
+    padding: 10px 8px;
+    flex: 0 0 auto;
+  }
+  .app-action.ghost:hover {
+    color: var(--text);
+  }
+
+  /* Empty state for filter */
+  .empty {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--text-secondary);
+  }
+  .empty-icon {
+    font-size: 56px;
+    margin-bottom: 16px;
+    opacity: 0.4;
+  }
+  .empty-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    background: var(--bg-section);
+    padding: 56px 22px 40px;
+    border-top: 1px solid var(--border-light);
+    color: var(--text-tertiary);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .footer-inner {
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+  .footer-cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 32px;
+    margin-bottom: 40px;
+  }
+  .footer-col h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .footer-col a {
+    color: var(--text-secondary);
+    font-size: 13px;
+  }
+  .footer-col a:hover {
+    color: var(--text);
+  }
+  .footer-bottom {
+    border-top: 1px solid var(--border-light);
+    padding-top: 24px;
+    text-align: center;
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 720px) {
+    section { padding: 56px 16px; }
+    .hero { padding: 56px 16px 32px; }
+    .hero-stats { gap: 32px; margin-top: 40px; }
+    .hero-stat-num { font-size: 40px; }
+    .featured-card { padding: 28px 24px; min-height: 320px; }
+    .featured-name { font-size: 26px; }
+    .app-grid { grid-template-columns: 1fr; }
+    .nav-inner { padding: 0 16px; }
+    .cat-nav { padding: 16px 16px 20px; }
+    .apps-section { padding: 24px 16px 60px; }
+  }
+
+  /* Smooth scroll target offset */
+  .cat-block { scroll-margin-top: calc(var(--nav-h) + 80px); }
 </style>
 </head>
-
 <body>
 
-<header>PezzaliHub</header>
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="nav-brand">PezzaliHub</a>
+    <div class="nav-links">
+      <a href="#featured">In evidenza</a>
+      <a href="#tutte">Tutte le app</a>
+      <a href="https://github.com/pezzaliapp" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.alessandropezzali.it" target="_blank" rel="noopener">Sito autore</a>
+    </div>
+  </div>
+</nav>
 
-<div class="container">
-  <div class="grid">
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">L'ecosistema PezzaliAPP</p>
+    <h1 class="hero-title">Strumenti che<br>fanno il loro lavoro.</h1>
+    <p class="hero-sub">
+      Settantasette app web per officine, vendite, AI, musica, scienza e tempo libero.<br>
+      Tutte nel browser. Zero installazioni.
+    </p>
+    <div class="hero-actions">
+      <a href="#featured" class="btn-primary">Esplora le app</a>
+      <a href="https://github.com/pezzaliapp" target="_blank" rel="noopener" class="btn-secondary">Vedi il codice</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-num">77</div>
+        <div class="hero-stat-label">App selezionate</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">13</div>
+        <div class="hero-stat-label">Categorie</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">100%</div>
+        <div class="hero-stat-label">Open source</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <a class="card" href="https://www.pezzaliapp.com" target="_blank">
-      <div class="title">PezzaliAPP</div>
-      <div class="desc">Sito principale</div>
-    </a>
+<!-- FEATURED -->
+<section class="featured tight" id="featured">
+  <div class="section-inner">
+    <h2 class="section-title">In evidenza.</h2>
+    <p class="section-sub">Tre strumenti che usiamo ogni giorno sul campo.</p>
+    <div class="featured-grid" id="featured-grid"></div>
+  </div>
+</section>
 
-    <a class="card" href="https://www.alessandropezzali.it/CSVXpressSmart/" target="_blank">
-      <div class="title">CSVXpressSmart</div>
-      <div class="desc">Listini e margini</div>
-    </a>
-
-    <a class="card" href="https://www.alessandropezzali.it/CheckappExcel/" target="_blank">
-      <div class="title">CheckappExcel</div>
-      <div class="desc">Controllo dati</div>
-    </a>
-
-    <a class="card" href="https://www.alessandropezzali.it/TechAssist-AI-by-PezzaliApp/" target="_blank">
-      <div class="title">TechAssist AI</div>
-      <div class="desc">Supporto tecnico</div>
-    </a>
-
-    <a class="card" href="https://www.alessandropezzali.it/triagefirst/" target="_blank">
-      <div class="title">TriageFirst</div>
-      <div class="desc">Triage informativo</div>
-    </a>
-
-    <a class="card" href="https://www.alessandropezzali.it/djapp/" target="_blank">
-      <div class="title">djApp</div>
-      <div class="desc">Console DJ</div>
-    </a>
-
+<!-- SEARCH -->
+<div class="search-section" id="tutte">
+  <div class="search-wrap">
+    <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"></circle>
+      <path d="m21 21-4.35-4.35"></path>
+    </svg>
+    <input
+      type="text"
+      class="search-input"
+      id="search"
+      placeholder="Cerca tra le 77 app… (es. listino, drum, AI, gomma)"
+      autocomplete="off"
+      spellcheck="false"
+    >
+    <button class="search-clear" id="search-clear" aria-label="Pulisci">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 6 6 18M6 6l12 12"></path>
+      </svg>
+    </button>
   </div>
 </div>
+
+<!-- CATEGORY NAV -->
+<div class="cat-nav">
+  <div class="cat-nav-inner" id="cat-nav-inner"></div>
+</div>
+
+<!-- APPS GRID -->
+<section class="apps-section">
+  <div class="section-inner" id="apps-container"></div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-cols">
+      <div class="footer-col">
+        <h4>PezzaliHub</h4>
+        <ul>
+          <li><a href="#tutte">Tutte le app</a></li>
+          <li><a href="#featured">In evidenza</a></li>
+          <li><a href="https://www.pezzaliapp.com" target="_blank" rel="noopener">Sito principale</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Per il lavoro</h4>
+        <ul>
+          <li><a href="#cat-commerciale">Commerciali</a></li>
+          <li><a href="#cat-officina">Officina</a></li>
+          <li><a href="#cat-ai">AI &amp; Assistenti</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Per esplorare</h4>
+        <ul>
+          <li><a href="#cat-musica">Musica</a></li>
+          <li><a href="#cat-scienza">Scienza</a></li>
+          <li><a href="#cat-giochi">Giochi</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Autore</h4>
+        <ul>
+          <li><a href="https://www.alessandropezzali.it" target="_blank" rel="noopener">alessandropezzali.it</a></li>
+          <li><a href="https://github.com/pezzaliapp" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/pezzaliapp/" target="_blank" rel="noopener">LinkedIn</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Alessandro Pezzali · pezzalihub.app · Tutto il codice è open source su GitHub.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+const DATA = {"apps": [{"name": "pezzaliguard", "desc": "", "cat": "🔐 Sicurezza & Privacy", "domain": "https://www.alessandropezzali.it/pezzaliguard/", "gh": "https://pezzaliapp.github.io/pezzaliguard/", "repo": "https://github.com/pezzaliapp/pezzaliguard", "date": "2026-04-30", "cat_data": {"slug": "sicurezza", "short": "Sicurezza", "tagline": "Strumenti di sicurezza e privacy.", "order": 7}}, {"name": "listino-configuratore", "desc": "", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/listino-configuratore/", "gh": "https://pezzaliapp.github.io/listino-configuratore/", "repo": "https://github.com/pezzaliapp/listino-configuratore", "date": "2026-04-29", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "ExelCFR", "desc": "CERCA.VERT tra listini Excel/CSV, PWA 100% client-side", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/ExelCFR/", "gh": "https://pezzaliapp.github.io/ExelCFR/", "repo": "https://github.com/pezzaliapp/ExelCFR", "date": "2026-04-28", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "listino-pdf-extractor", "desc": "", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/listino-pdf-extractor/", "gh": "https://pezzaliapp.github.io/listino-pdf-extractor/", "repo": "https://github.com/pezzaliapp/listino-pdf-extractor", "date": "2026-04-27", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "triton-wars", "desc": "", "cat": "🎮 Giochi", "domain": "https://www.alessandropezzali.it/triton-wars/", "gh": "https://pezzaliapp.github.io/triton-wars/", "repo": "https://github.com/pezzaliapp/triton-wars", "date": "2026-04-27", "cat_data": {"slug": "giochi", "short": "Giochi", "tagline": "Arcade classici e nuovi esperimenti ludici.", "order": 8}}, {"name": "pezzaliapp.github.io", "desc": "", "cat": "🌐 Hub, Identity & Portfolio", "domain": "https://www.alessandropezzali.it/pezzaliapp.github.io/", "gh": "https://pezzaliapp.github.io/pezzaliapp.github.io/", "repo": "https://github.com/pezzaliapp/pezzaliapp.github.io", "date": "2026-04-26", "cat_data": {"slug": "hub", "short": "Hub", "tagline": "Portali e indici dell'ecosistema PezzaliAPP.", "order": 9}}, {"name": "MeteorWatch", "desc": "", "cat": "🔬 Fisica & Scienza", "domain": "https://www.alessandropezzali.it/MeteorWatch/", "gh": "https://pezzaliapp.github.io/MeteorWatch/", "repo": "https://github.com/pezzaliapp/MeteorWatch", "date": "2026-04-25", "cat_data": {"slug": "scienza", "short": "Scienza", "tagline": "Visualizzazioni e laboratori per esplorare la realtà.", "order": 5}}, {"name": "DrumAPPBass", "desc": "", "cat": "🎵 Musica & Audio", "domain": "https://www.alessandropezzali.it/DrumAPPBass/", "gh": "https://pezzaliapp.github.io/DrumAPPBass/", "repo": "https://github.com/pezzaliapp/DrumAPPBass", "date": "2026-04-25", "cat_data": {"slug": "musica", "short": "Musica", "tagline": "Strumenti musicali nel browser, zero installazioni.", "order": 6}}, {"name": "ListinoHub", "desc": "", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/ListinoHub/", "gh": "https://pezzaliapp.github.io/ListinoHub/", "repo": "https://github.com/pezzaliapp/ListinoHub", "date": "2026-04-24", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "CubeSat_Constellation", "desc": "Multi-satellite 3D orbit visualization with live Celestrak TLE catalog — CesiumJS PWA. Real-time orbital mechanics with SGP4/SDP4 propagation, satellite library, and Sun tracking.", "cat": "🛠️ Officina & Tecnico", "domain": "https://www.alessandropezzali.it/CubeSat_Constellation/", "gh": "https://pezzaliapp.github.io/CubeSat_Constellation/", "repo": "https://github.com/pezzaliapp/CubeSat_Constellation", "date": "2026-04-23", "cat_data": {"slug": "officina", "short": "Officina", "tagline": "Software per gommisti, equilibrature e attrezzature da officina.", "order": 2}}, {"name": "quoteflow-cascosR0426", "desc": "", "cat": "🛠️ Officina & Tecnico", "domain": "https://www.alessandropezzali.it/quoteflow-cascosR0426/", "gh": "https://pezzaliapp.github.io/quoteflow-cascosR0426/", "repo": "https://github.com/pezzaliapp/quoteflow-cascosR0426", "date": "2026-04-22", "cat_data": {"slug": "officina", "short": "Officina", "tagline": "Software per gommisti, equilibrature e attrezzature da officina.", "order": 2}}, {"name": "CheckappExcel", "desc": "Confronta due o più file Excel/CSV di listini per codice prodotto → Excel colorato. Web + Python CLI/GUI.", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/CheckappExcel/", "gh": "https://pezzaliapp.github.io/CheckappExcel/", "repo": "https://github.com/pezzaliapp/CheckappExcel", "date": "2026-04-21", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "GeoTrack", "desc": "", "cat": "🛰️ Geo & Drone", "domain": "https://www.alessandropezzali.it/GeoTrack/", "gh": "https://pezzaliapp.github.io/GeoTrack/", "repo": "https://github.com/pezzaliapp/GeoTrack", "date": "2026-04-21", "cat_data": {"slug": "geo", "short": "Geo", "tagline": "Tracciamento e geolocalizzazione.", "order": 10}}, {"name": "RISTOAPP", "desc": "", "cat": "🎮 Giochi", "domain": "https://www.alessandropezzali.it/RISTOAPP/", "gh": "https://pezzaliapp.github.io/RISTOAPP/", "repo": "https://github.com/pezzaliapp/RISTOAPP", "date": "2026-04-20", "cat_data": {"slug": "giochi", "short": "Giochi", "tagline": "Arcade classici e nuovi esperimenti ludici.", "order": 8}}, {"name": "quoteflash", "desc": "", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/quoteflash/", "gh": "https://pezzaliapp.github.io/quoteflash/", "repo": "https://github.com/pezzaliapp/quoteflash", "date": "2026-04-20", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "MyDeviceGuard", "desc": "", "cat": "🔐 Sicurezza & Privacy", "domain": "https://www.alessandropezzali.it/MyDeviceGuard/", "gh": "https://pezzaliapp.github.io/MyDeviceGuard/", "repo": "https://github.com/pezzaliapp/MyDeviceGuard", "date": "2026-04-18", "cat_data": {"slug": "sicurezza", "short": "Sicurezza", "tagline": "Strumenti di sicurezza e privacy.", "order": 7}}, {"name": "djappR1", "desc": "", "cat": "🎵 Musica & Audio", "domain": "https://www.alessandropezzali.it/djappR1/", "gh": "https://pezzaliapp.github.io/djappR1/", "repo": "https://github.com/pezzaliapp/djappR1", "date": "2026-04-18", "cat_data": {"slug": "musica", "short": "Musica", "tagline": "Strumenti musicali nel browser, zero installazioni.", "order": 6}}, {"name": "Simulatore-Locazione-Operativa-e-Finanziamento", "desc": "", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/Simulatore-Locazione-Operativa-e-Finanziamento/", "gh": "https://pezzaliapp.github.io/Simulatore-Locazione-Operativa-e-Finanziamento/", "repo": "https://github.com/pezzaliapp/Simulatore-Locazione-Operativa-e-Finanziamento", "date": "2026-04-16", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "listapp2026", "desc": "", "cat": "🌐 Hub, Identity & Portfolio", "domain": "https://www.alessandropezzali.it/listapp2026/", "gh": "https://pezzaliapp.github.io/listapp2026/", "repo": "https://github.com/pezzaliapp/listapp2026", "date": "2026-04-15", "cat_data": {"slug": "hub", "short": "Hub", "tagline": "Portali e indici dell'ecosistema PezzaliAPP.", "order": 9}}, {"name": "GommistaPro-Assistant", "desc": "", "cat": "🤖 AI & Assistenti", "domain": "https://www.alessandropezzali.it/GommistaPro-Assistant/", "gh": "https://pezzaliapp.github.io/GommistaPro-Assistant/", "repo": "https://github.com/pezzaliapp/GommistaPro-Assistant", "date": "2026-04-12", "cat_data": {"slug": "ai", "short": "AI", "tagline": "Assistenti intelligenti per il lavoro quotidiano.", "order": 3}}, {"name": "TireCheck-Pro", "desc": "", "cat": "🛠️ Officina & Tecnico", "domain": "https://www.alessandropezzali.it/TireCheck-Pro/", "gh": "https://pezzaliapp.github.io/TireCheck-Pro/", "repo": "https://github.com/pezzaliapp/TireCheck-Pro", "date": "2026-04-07", "cat_data": {"slug": "officina", "short": "Officina", "tagline": "Software per gommisti, equilibrature e attrezzature da officina.", "order": 2}}, {"name": "Rel01_noleggio", "desc": "Aggiornamento alla app noleggio Luglio 2025 con stampa", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/Rel01_noleggio/", "gh": "https://pezzaliapp.github.io/Rel01_noleggio/", "repo": "https://github.com/pezzaliapp/Rel01_noleggio", "date": "2026-04-07", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "triagefirst", "desc": "", "cat": "🤖 AI & Assistenti", "domain": "https://www.alessandropezzali.it/triagefirst/", "gh": "https://pezzaliapp.github.io/triagefirst/", "repo": "https://github.com/pezzaliapp/triagefirst", "date": "2026-04-04", "cat_data": {"slug": "ai", "short": "AI", "tagline": "Assistenti intelligenti per il lavoro quotidiano.", "order": 3}}, {"name": "worldmonitor-links", "desc": "Lightweight PWA that organizes and explains external WorldMonitor views for decision support. No affiliation with WorldMonitor.", "cat": "🌐 Hub, Identity & Portfolio", "domain": "https://www.alessandropezzali.it/worldmonitor-links/", "gh": "https://pezzaliapp.github.io/worldmonitor-links/", "repo": "https://github.com/pezzaliapp/worldmonitor-links", "date": "2026-03-29", "cat_data": {"slug": "hub", "short": "Hub", "tagline": "Portali e indici dell'ecosistema PezzaliAPP.", "order": 9}}, {"name": "TireScan-Pro", "desc": "", "cat": "🛠️ Officina & Tecnico", "domain": "https://www.alessandropezzali.it/TireScan-Pro/", "gh": "https://pezzaliapp.github.io/TireScan-Pro/", "repo": "https://github.com/pezzaliapp/TireScan-Pro", "date": "2026-03-25", "cat_data": {"slug": "officina", "short": "Officina", "tagline": "Software per gommisti, equilibrature e attrezzature da officina.", "order": 2}}, {"name": "ai-backoffice-agent-demo", "desc": "", "cat": "🤖 AI & Assistenti", "domain": "https://www.alessandropezzali.it/ai-backoffice-agent-demo/", "gh": "https://pezzaliapp.github.io/ai-backoffice-agent-demo/", "repo": "https://github.com/pezzaliapp/ai-backoffice-agent-demo", "date": "2026-02-22", "cat_data": {"slug": "ai", "short": "AI", "tagline": "Assistenti intelligenti per il lavoro quotidiano.", "order": 3}}, {"name": "CSVXpressSmart", "desc": "", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/CSVXpressSmart/", "gh": "https://pezzaliapp.github.io/CSVXpressSmart/", "repo": "https://github.com/pezzaliapp/CSVXpressSmart", "date": "2026-01-29", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "trusting-trust-pwa", "desc": "A minimal PWA demonstrating why you can’t blindly trust your tools.", "cat": "🔐 Sicurezza & Privacy", "domain": "https://www.alessandropezzali.it/trusting-trust-pwa/", "gh": "https://pezzaliapp.github.io/trusting-trust-pwa/", "repo": "https://github.com/pezzaliapp/trusting-trust-pwa", "date": "2026-01-21", "cat_data": {"slug": "sicurezza", "short": "Sicurezza", "tagline": "Strumenti di sicurezza e privacy.", "order": 7}}, {"name": "V1", "desc": "", "cat": "🧪 Sperimentali & Altro", "domain": "https://www.alessandropezzali.it/V1/", "gh": "https://pezzaliapp.github.io/V1/", "repo": "https://github.com/pezzaliapp/V1", "date": "2026-01-10", "cat_data": {"slug": "altro", "short": "Lab", "tagline": "Esperimenti e prototipi.", "order": 13}}, {"name": "GuitarBand-Lite", "desc": "", "cat": "🎵 Musica & Audio", "domain": "https://www.alessandropezzali.it/GuitarBand-Lite/", "gh": "https://pezzaliapp.github.io/GuitarBand-Lite/", "repo": "https://github.com/pezzaliapp/GuitarBand-Lite", "date": "2025-12-25", "cat_data": {"slug": "musica", "short": "Musica", "tagline": "Strumenti musicali nel browser, zero installazioni.", "order": 6}}, {"name": "Sales-Canvas", "desc": "", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/Sales-Canvas/", "gh": "https://pezzaliapp.github.io/Sales-Canvas/", "repo": "https://github.com/pezzaliapp/Sales-Canvas", "date": "2025-12-22", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "BASIC-RELOADED", "desc": "Scrivi. Esegui. Ricorda.", "cat": "🧪 Sperimentali & Altro", "domain": "https://www.alessandropezzali.it/BASIC-RELOADED/", "gh": "https://pezzaliapp.github.io/BASIC-RELOADED/", "repo": "https://github.com/pezzaliapp/BASIC-RELOADED", "date": "2025-12-21", "cat_data": {"slug": "altro", "short": "Lab", "tagline": "Esperimenti e prototipi.", "order": 13}}, {"name": "KubeApp", "desc": "", "cat": "🛠️ Officina & Tecnico", "domain": "https://www.alessandropezzali.it/KubeApp/", "gh": "https://pezzaliapp.github.io/KubeApp/", "repo": "https://github.com/pezzaliapp/KubeApp", "date": "2025-12-21", "cat_data": {"slug": "officina", "short": "Officina", "tagline": "Software per gommisti, equilibrature e attrezzature da officina.", "order": 2}}, {"name": "lift-engine", "desc": "Universal lift configuration & pricing engine — technical + commercial + analytics platform for workshop equipment.", "cat": "🛠️ Officina & Tecnico", "domain": "https://www.alessandropezzali.it/lift-engine/", "gh": "https://pezzaliapp.github.io/lift-engine/", "repo": "https://github.com/pezzaliapp/lift-engine", "date": "2025-12-20", "cat_data": {"slug": "officina", "short": "Officina", "tagline": "Software per gommisti, equilibrature e attrezzature da officina.", "order": 2}}, {"name": "RubikAPP", "desc": "", "cat": "🎮 Giochi", "domain": "https://www.alessandropezzali.it/RubikAPP/", "gh": "https://pezzaliapp.github.io/RubikAPP/", "repo": "https://github.com/pezzaliapp/RubikAPP", "date": "2025-12-03", "cat_data": {"slug": "giochi", "short": "Giochi", "tagline": "Arcade classici e nuovi esperimenti ludici.", "order": 8}}, {"name": "Business-Consultant", "desc": "", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/Business-Consultant/", "gh": "https://pezzaliapp.github.io/Business-Consultant/", "repo": "https://github.com/pezzaliapp/Business-Consultant", "date": "2025-12-03", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "ParticleUniverse_PWA", "desc": "", "cat": "🔬 Fisica & Scienza", "domain": "https://www.alessandropezzali.it/ParticleUniverse_PWA/", "gh": "https://pezzaliapp.github.io/ParticleUniverse_PWA/", "repo": "https://github.com/pezzaliapp/ParticleUniverse_PWA", "date": "2025-10-26", "cat_data": {"slug": "scienza", "short": "Scienza", "tagline": "Visualizzazioni e laboratori per esplorare la realtà.", "order": 5}}, {"name": "RemoteAssistPWA", "desc": "", "cat": "🤖 AI & Assistenti", "domain": "https://www.alessandropezzali.it/RemoteAssistPWA/", "gh": "https://pezzaliapp.github.io/RemoteAssistPWA/", "repo": "https://github.com/pezzaliapp/RemoteAssistPWA", "date": "2025-10-22", "cat_data": {"slug": "ai", "short": "AI", "tagline": "Assistenti intelligenti per il lavoro quotidiano.", "order": 3}}, {"name": "VisiCalc_Tribute", "desc": "", "cat": "🌐 Hub, Identity & Portfolio", "domain": "https://www.alessandropezzali.it/VisiCalc_Tribute/", "gh": "https://pezzaliapp.github.io/VisiCalc_Tribute/", "repo": "https://github.com/pezzaliapp/VisiCalc_Tribute", "date": "2025-10-19", "cat_data": {"slug": "hub", "short": "Hub", "tagline": "Portali e indici dell'ecosistema PezzaliAPP.", "order": 9}}, {"name": "RubikApp-Solution_AI", "desc": "", "cat": "🤖 AI & Assistenti", "domain": "https://www.alessandropezzali.it/RubikApp-Solution_AI/", "gh": "https://pezzaliapp.github.io/RubikApp-Solution_AI/", "repo": "https://github.com/pezzaliapp/RubikApp-Solution_AI", "date": "2025-09-27", "cat_data": {"slug": "ai", "short": "AI", "tagline": "Assistenti intelligenti per il lavoro quotidiano.", "order": 3}}, {"name": "RischioImpresaPWA", "desc": "", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/RischioImpresaPWA/", "gh": "https://pezzaliapp.github.io/RischioImpresaPWA/", "repo": "https://github.com/pezzaliapp/RischioImpresaPWA", "date": "2025-09-21", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "MarginRushPWA", "desc": "", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/MarginRushPWA/", "gh": "https://pezzaliapp.github.io/MarginRushPWA/", "repo": "https://github.com/pezzaliapp/MarginRushPWA", "date": "2025-09-21", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "LottoAI", "desc": "", "cat": "🤖 AI & Assistenti", "domain": "https://www.alessandropezzali.it/LottoAI/", "gh": "https://pezzaliapp.github.io/LottoAI/", "repo": "https://github.com/pezzaliapp/LottoAI", "date": "2025-09-20", "cat_data": {"slug": "ai", "short": "AI", "tagline": "Assistenti intelligenti per il lavoro quotidiano.", "order": 3}}, {"name": "Percorsi_di_Matematica_PWA", "desc": "", "cat": "🧮 Matematica & Finanza", "domain": "https://www.alessandropezzali.it/Percorsi_di_Matematica_PWA/", "gh": "https://pezzaliapp.github.io/Percorsi_di_Matematica_PWA/", "repo": "https://github.com/pezzaliapp/Percorsi_di_Matematica_PWA", "date": "2025-09-13", "cat_data": {"slug": "matematica", "short": "Matematica", "tagline": "Calcoli, simulazioni, esplorazioni numeriche.", "order": 4}}, {"name": "TextPacketPWA", "desc": "", "cat": "📧 Comunicazione", "domain": "https://www.alessandropezzali.it/TextPacketPWA/", "gh": "https://pezzaliapp.github.io/TextPacketPWA/", "repo": "https://github.com/pezzaliapp/TextPacketPWA", "date": "2025-09-12", "cat_data": {"slug": "comunicazione", "short": "Comunicazione", "tagline": "Strumenti di messaggistica.", "order": 11}}, {"name": "TimeCoin", "desc": "", "cat": "🛠️ Officina & Tecnico", "domain": "https://www.alessandropezzali.it/TimeCoin/", "gh": "https://pezzaliapp.github.io/TimeCoin/", "repo": "https://github.com/pezzaliapp/TimeCoin", "date": "2025-09-11", "cat_data": {"slug": "officina", "short": "Officina", "tagline": "Software per gommisti, equilibrature e attrezzature da officina.", "order": 2}}, {"name": "OrbitalPWA", "desc": "", "cat": "🔬 Fisica & Scienza", "domain": "https://www.alessandropezzali.it/OrbitalPWA/", "gh": "https://pezzaliapp.github.io/OrbitalPWA/", "repo": "https://github.com/pezzaliapp/OrbitalPWA", "date": "2025-09-05", "cat_data": {"slug": "scienza", "short": "Scienza", "tagline": "Visualizzazioni e laboratori per esplorare la realtà.", "order": 5}}, {"name": "Dantzig", "desc": "", "cat": "🧮 Matematica & Finanza", "domain": "https://www.alessandropezzali.it/Dantzig/", "gh": "https://pezzaliapp.github.io/Dantzig/", "repo": "https://github.com/pezzaliapp/Dantzig", "date": "2025-09-04", "cat_data": {"slug": "matematica", "short": "Matematica", "tagline": "Calcoli, simulazioni, esplorazioni numeriche.", "order": 4}}, {"name": "RemoteGlasses", "desc": "", "cat": "🤖 AI & Assistenti", "domain": "https://www.alessandropezzali.it/RemoteGlasses/", "gh": "https://pezzaliapp.github.io/RemoteGlasses/", "repo": "https://github.com/pezzaliapp/RemoteGlasses", "date": "2025-09-03", "cat_data": {"slug": "ai", "short": "AI", "tagline": "Assistenti intelligenti per il lavoro quotidiano.", "order": 3}}, {"name": "EBITAPP", "desc": "", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/EBITAPP/", "gh": "https://pezzaliapp.github.io/EBITAPP/", "repo": "https://github.com/pezzaliapp/EBITAPP", "date": "2025-09-02", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "LaPiramideMatematica", "desc": "", "cat": "🧮 Matematica & Finanza", "domain": "https://www.alessandropezzali.it/LaPiramideMatematica/", "gh": "https://pezzaliapp.github.io/LaPiramideMatematica/", "repo": "https://github.com/pezzaliapp/LaPiramideMatematica", "date": "2025-08-31", "cat_data": {"slug": "matematica", "short": "Matematica", "tagline": "Calcoli, simulazioni, esplorazioni numeriche.", "order": 4}}, {"name": "VisitePlanner", "desc": "", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/VisitePlanner/", "gh": "https://pezzaliapp.github.io/VisitePlanner/", "repo": "https://github.com/pezzaliapp/VisitePlanner", "date": "2025-08-28", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "CALCOLATRICE-ALLINEAMENTI", "desc": "“Calcolatrice Allineamenti / Wheel Alignment Calculator – PWA open source per camber, caster, toe, gradi↔mm, strategie di correzione e report offline.”", "cat": "🧮 Matematica & Finanza", "domain": "https://www.alessandropezzali.it/CALCOLATRICE-ALLINEAMENTI/", "gh": "https://pezzaliapp.github.io/CALCOLATRICE-ALLINEAMENTI/", "repo": "https://github.com/pezzaliapp/CALCOLATRICE-ALLINEAMENTI", "date": "2025-08-27", "cat_data": {"slug": "matematica", "short": "Matematica", "tagline": "Calcoli, simulazioni, esplorazioni numeriche.", "order": 4}}, {"name": "Numerology", "desc": "Web app in HTML/JS per calcolare numerologia pitagorica (percorsi di vita, numeri del nome, matrice 3×3, anno personale).", "cat": "🧮 Matematica & Finanza", "domain": "https://www.alessandropezzali.it/Numerology/", "gh": "https://pezzaliapp.github.io/Numerology/", "repo": "https://github.com/pezzaliapp/Numerology", "date": "2025-08-25", "cat_data": {"slug": "matematica", "short": "Matematica", "tagline": "Calcoli, simulazioni, esplorazioni numeriche.", "order": 4}}, {"name": "CRM-PWA", "desc": "Caratteristiche principali  Gestione delle visite: Crea, modifica e archivia le visite commerciali. Funzionalità CRM: Salva nuovi clienti (o potenziali), caricali da CSV e gestiscine i dati. Gestione prodotti: Carica prodotti da CSV, aggiungili alla tabella ordini/preventivi e applica sconti. Esportazione dati: Esporta in Excel, CSV e JSON, ....", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/CRM-PWA/", "gh": "https://pezzaliapp.github.io/CRM-PWA/", "repo": "https://github.com/pezzaliapp/CRM-PWA", "date": "2025-07-28", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "KitResponsabileVendite", "desc": "kit per il responsabile vendite", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/KitResponsabileVendite/", "gh": "https://pezzaliapp.github.io/KitResponsabileVendite/", "repo": "https://github.com/pezzaliapp/KitResponsabileVendite", "date": "2025-07-24", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "PriceXpress", "desc": "Calcolatore Prezzo di Vendita", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/PriceXpress/", "gh": "https://pezzaliapp.github.io/PriceXpress/", "repo": "https://github.com/pezzaliapp/PriceXpress", "date": "2025-07-05", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "MCINV", "desc": "CALCOLA MARGINI PROVVIGIONI E INVERSO ARRIVANDO ALLO SCONTO", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/MCINV/", "gh": "https://pezzaliapp.github.io/MCINV/", "repo": "https://github.com/pezzaliapp/MCINV", "date": "2025-06-29", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "C4_PEZ", "desc": "SIMULATORE DI UNA PWA SU COMMODORE 64", "cat": "🧮 Matematica & Finanza", "domain": "https://www.alessandropezzali.it/C4_PEZ/", "gh": "https://pezzaliapp.github.io/C4_PEZ/", "repo": "https://github.com/pezzaliapp/C4_PEZ", "date": "2025-06-29", "cat_data": {"slug": "matematica", "short": "Matematica", "tagline": "Calcoli, simulazioni, esplorazioni numeriche.", "order": 4}}, {"name": "EcoBit", "desc": "", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/EcoBit/", "gh": "https://pezzaliapp.github.io/EcoBit/", "repo": "https://github.com/pezzaliapp/EcoBit", "date": "2025-06-29", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "AccessTracker_Remote_Control", "desc": "Controllo Remoto", "cat": "🤖 AI & Assistenti", "domain": "https://www.alessandropezzali.it/AccessTracker_Remote_Control/", "gh": "https://pezzaliapp.github.io/AccessTracker_Remote_Control/", "repo": "https://github.com/pezzaliapp/AccessTracker_Remote_Control", "date": "2025-06-07", "cat_data": {"slug": "ai", "short": "AI", "tagline": "Assistenti intelligenti per il lavoro quotidiano.", "order": 3}}, {"name": "NETTIXpress", "desc": "Listino CSV con prezzi netti di acquisto e prezzi netti di vendita", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/NETTIXpress/", "gh": "https://pezzaliapp.github.io/NETTIXpress/", "repo": "https://github.com/pezzaliapp/NETTIXpress", "date": "2025-05-10", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "AirQualityMonitor-Hybrid", "desc": "🌱 PWA + Hardware DIY per monitorare la qualità dell’aria (PM2.5, CO₂, VOC, temperatura, umidità, luce solare) in tempo reale. Progetto open-source compatibile con ESP32 e Arduino, versione fissa e portatile.", "cat": "🎵 Musica & Audio", "domain": "https://www.alessandropezzali.it/AirQualityMonitor-Hybrid/", "gh": "https://pezzaliapp.github.io/AirQualityMonitor-Hybrid/", "repo": "https://github.com/pezzaliapp/AirQualityMonitor-Hybrid", "date": "2025-04-06", "cat_data": {"slug": "musica", "short": "Musica", "tagline": "Strumenti musicali nel browser, zero installazioni.", "order": 6}}, {"name": "VisiteMap", "desc": "", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/VisiteMap/", "gh": "https://pezzaliapp.github.io/VisiteMap/", "repo": "https://github.com/pezzaliapp/VisiteMap", "date": "2025-04-03", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "SchedaCliente", "desc": "Registrazione nuovo cliente", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/SchedaCliente/", "gh": "https://pezzaliapp.github.io/SchedaCliente/", "repo": "https://github.com/pezzaliapp/SchedaCliente", "date": "2025-03-28", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "NotaSpese", "desc": "Nota Spese", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/NotaSpese/", "gh": "https://pezzaliapp.github.io/NotaSpese/", "repo": "https://github.com/pezzaliapp/NotaSpese", "date": "2025-03-23", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "AirQualityMonitor-Complete", "desc": "Test", "cat": "🔬 Fisica & Scienza", "domain": "https://www.alessandropezzali.it/AirQualityMonitor-Complete/", "gh": "https://pezzaliapp.github.io/AirQualityMonitor-Complete/", "repo": "https://github.com/pezzaliapp/AirQualityMonitor-Complete", "date": "2025-03-23", "cat_data": {"slug": "scienza", "short": "Scienza", "tagline": "Visualizzazioni e laboratori per esplorare la realtà.", "order": 5}}, {"name": "FINDNMATCH", "desc": "Inserisci due file Excel e indica quali colonne vuoi confrontare indicandone il numero: ad esempio confronta la colonna 2 rispettivamente dei due file", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/FINDNMATCH/", "gh": "https://pezzaliapp.github.io/FINDNMATCH/", "repo": "https://github.com/pezzaliapp/FINDNMATCH", "date": "2025-03-18", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "PezzaliBlockChain", "desc": "BlockChain e Bitcoin", "cat": "⏱️ Produttività & Tools", "domain": "https://www.alessandropezzali.it/PezzaliBlockChain/", "gh": "https://pezzaliapp.github.io/PezzaliBlockChain/", "repo": "https://github.com/pezzaliapp/PezzaliBlockChain", "date": "2025-03-16", "cat_data": {"slug": "produttivita", "short": "Produttività", "tagline": "Utility per organizzare il tempo e il lavoro.", "order": 12}}, {"name": "FleXiPrice", "desc": "Calcolatore di prezzi netti, sconti e marginalità", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/FleXiPrice/", "gh": "https://pezzaliapp.github.io/FleXiPrice/", "repo": "https://github.com/pezzaliapp/FleXiPrice", "date": "2025-03-15", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "indicizzazione", "desc": "App che permette di adeguare il valore di una grandezza alle variazioni di una diversa grandezza", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/indicizzazione/", "gh": "https://pezzaliapp.github.io/indicizzazione/", "repo": "https://github.com/pezzaliapp/indicizzazione", "date": "2025-03-05", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "XCompare", "desc": "Confronta due colonne Excel", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/XCompare/", "gh": "https://pezzaliapp.github.io/XCompare/", "repo": "https://github.com/pezzaliapp/XCompare", "date": "2025-02-09", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "PLANVISITE", "desc": "Pianificazione visite con esportazioni dati per my maps", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/PLANVISITE/", "gh": "https://pezzaliapp.github.io/PLANVISITE/", "repo": "https://github.com/pezzaliapp/PLANVISITE", "date": "2025-02-06", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "PhotonExplorer", "desc": "PhotonExplorer è un semplice progetto web per pianificare e simulare il volo di un drone tra più waypoint, con la possibilità di tenere conto di una velocità e di una direzione del vento.", "cat": "🔬 Fisica & Scienza", "domain": "https://www.alessandropezzali.it/PhotonExplorer/", "gh": "https://pezzaliapp.github.io/PhotonExplorer/", "repo": "https://github.com/pezzaliapp/PhotonExplorer", "date": "2025-01-26", "cat_data": {"slug": "scienza", "short": "Scienza", "tagline": "Visualizzazioni e laboratori per esplorare la realtà.", "order": 5}}, {"name": "Excel-DAX-Power-BI-Helper", "desc": "Excel DAX Power BI Helper è una Progressive Web App (PWA) progettata per supportare gli utenti di Excel, DAX e Power BI con una serie di strumenti avanzati per migliorare la produttività e semplificare le attività complesse.", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/Excel-DAX-Power-BI-Helper/", "gh": "https://pezzaliapp.github.io/Excel-DAX-Power-BI-Helper/", "repo": "https://github.com/pezzaliapp/Excel-DAX-Power-BI-Helper", "date": "2025-01-18", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "greensaver", "desc": "GreenSaver - Salviamo il Pianeta  GreenSaver è una Single Page Application (SPA) pensata per incentivare la riduzione dell’impatto ambientale. L’app fornisce consigli ecologici, un calcolatore di impronta ecologica, funzionalità di gamification, crowdfunding per progetti ambientali e molto altro.", "cat": "💼 PWA Commerciali & Vendite", "domain": "https://www.alessandropezzali.it/greensaver/", "gh": "https://pezzaliapp.github.io/greensaver/", "repo": "https://github.com/pezzaliapp/greensaver", "date": "2025-01-18", "cat_data": {"slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "order": 1}}, {"name": "Bioritmo2025", "desc": "Bioritmo2025 è una PWA che calcola i bioritmi fisico, emotivo e intellettuale basati sulla data di nascita. Compatibile con desktop e dispositivi mobili, offre grafici interattivi, funzionalità offline e aggiornamenti automatici tramite GitHub Pages. Utilizzabile per scopi di intrattenimento.", "cat": "🧮 Matematica & Finanza", "domain": "https://www.alessandropezzali.it/Bioritmo2025/", "gh": "https://pezzaliapp.github.io/Bioritmo2025/", "repo": "https://github.com/pezzaliapp/Bioritmo2025", "date": "2025-01-12", "cat_data": {"slug": "matematica", "short": "Matematica", "tagline": "Calcoli, simulazioni, esplorazioni numeriche.", "order": 4}}], "categories": [{"name": "💼 PWA Commerciali & Vendite", "slug": "commerciale", "short": "Commerciali", "tagline": "Strumenti pratici per chi vende, calcola, configura.", "emoji": "💼", "count": 31}, {"name": "🛠️ Officina & Tecnico", "slug": "officina", "short": "Officina", "tagline": "Software per gommisti, equilibrature e attrezzature da officina.", "emoji": "🛠️", "count": 7}, {"name": "🤖 AI & Assistenti", "slug": "ai", "short": "AI", "tagline": "Assistenti intelligenti per il lavoro quotidiano.", "emoji": "🤖", "count": 8}, {"name": "🧮 Matematica & Finanza", "slug": "matematica", "short": "Matematica", "tagline": "Calcoli, simulazioni, esplorazioni numeriche.", "emoji": "🧮", "count": 7}, {"name": "🔬 Fisica & Scienza", "slug": "scienza", "short": "Scienza", "tagline": "Visualizzazioni e laboratori per esplorare la realtà.", "emoji": "🔬", "count": 5}, {"name": "🎵 Musica & Audio", "slug": "musica", "short": "Musica", "tagline": "Strumenti musicali nel browser, zero installazioni.", "emoji": "🎵", "count": 4}, {"name": "🔐 Sicurezza & Privacy", "slug": "sicurezza", "short": "Sicurezza", "tagline": "Strumenti di sicurezza e privacy.", "emoji": "🔐", "count": 3}, {"name": "🎮 Giochi", "slug": "giochi", "short": "Giochi", "tagline": "Arcade classici e nuovi esperimenti ludici.", "emoji": "🎮", "count": 3}, {"name": "🌐 Hub, Identity & Portfolio", "slug": "hub", "short": "Hub", "tagline": "Portali e indici dell'ecosistema PezzaliAPP.", "emoji": "🌐", "count": 4}, {"name": "🛰️ Geo & Drone", "slug": "geo", "short": "Geo", "tagline": "Tracciamento e geolocalizzazione.", "emoji": "🛰️", "count": 1}, {"name": "📧 Comunicazione", "slug": "comunicazione", "short": "Comunicazione", "tagline": "Strumenti di messaggistica.", "emoji": "📧", "count": 1}, {"name": "⏱️ Produttività & Tools", "slug": "produttivita", "short": "Produttività", "tagline": "Utility per organizzare il tempo e il lavoro.", "emoji": "⏱️", "count": 1}, {"name": "🧪 Sperimentali & Altro", "slug": "altro", "short": "Lab", "tagline": "Esperimenti e prototipi.", "emoji": "🧪", "count": 2}]};
+const GH_USER = "pezzaliapp";
+
+const FEATURED_NAMES = ["lift-engine", "CRM-PWA", "GommistaPro-Assistant"];
+
+// ===== Helpers =====
+const $ = (sel) => document.querySelector(sel);
+const $$ = (sel) => document.querySelectorAll(sel);
+function escapeHtml(s) {
+  return String(s || '').replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  })[c]);
+}
+function escapeAttr(s) { return escapeHtml(s); }
+
+// Compute the best primary URL for an app:
+// prefer alessandropezzali.it/<name>/, fallback to pezzaliapp.github.io/<name>/
+function primaryUrl(app) {
+  return app.domain || `https://www.alessandropezzali.it/${app.name}/`;
+}
+function fallbackUrl(app) {
+  return app.gh || `https://${GH_USER}.github.io/${app.name}/`;
+}
+
+// ===== Featured (homepage hero cards) =====
+function renderFeatured() {
+  const featured = FEATURED_NAMES
+    .map(n => DATA.apps.find(a => a.name === n))
+    .filter(Boolean);
+
+  const fallback = DATA.apps.filter(a => a.desc && !FEATURED_NAMES.includes(a.name)).slice(0, 3);
+  while (featured.length < 3 && fallback.length) featured.push(fallback.shift());
+
+  const html = featured.map(a => `
+    <div class="featured-card">
+      <div class="featured-eyebrow">${escapeHtml(a.cat.replace(/^[^A-Za-z]+\s*/, ''))}</div>
+      <h3 class="featured-name">${escapeHtml(a.name)}</h3>
+      <p class="featured-desc">${escapeHtml(a.desc || 'Una app dell\'ecosistema PezzaliAPP.')}</p>
+      <div class="featured-actions">
+        <a href="${escapeAttr(primaryUrl(a))}" target="_blank" rel="noopener" class="featured-link">
+          Apri l'app →
+        </a>
+        <a href="${escapeAttr(a.repo)}" target="_blank" rel="noopener" class="featured-link secondary">
+          Codice sorgente
+        </a>
+      </div>
+    </div>
+  `).join('');
+  $('#featured-grid').innerHTML = html;
+}
+
+// ===== Category navigation pills =====
+function renderCatNav() {
+  const html = [
+    `<button class="cat-pill active" data-cat="all">Tutte<span class="cat-pill-count">${DATA.apps.length}</span></button>`,
+    ...DATA.categories.map(c =>
+      `<button class="cat-pill" data-cat="${c.slug}">${c.emoji} ${escapeHtml(c.short)}<span class="cat-pill-count">${c.count}</span></button>`
+    )
+  ].join('');
+  $('#cat-nav-inner').innerHTML = html;
+
+  $$('.cat-pill').forEach(p => {
+    p.addEventListener('click', () => {
+      $$('.cat-pill').forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      const cat = p.dataset.cat;
+      currentFilter.cat = cat;
+      renderApps();
+      // Scroll to first matching block
+      if (cat === 'all') {
+        document.getElementById('tutte').scrollIntoView({ behavior: 'smooth' });
+      } else {
+        const target = document.getElementById(`cat-${cat}`);
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+}
+
+// ===== Filter state =====
+const currentFilter = { search: '', cat: 'all' };
+
+// ===== Apps render =====
+function renderApps() {
+  const container = $('#apps-container');
+  const search = currentFilter.search.trim().toLowerCase();
+  const cat = currentFilter.cat;
+
+  const filtered = DATA.apps.filter(a => {
+    if (cat !== 'all') {
+      const slug = (DATA.categories.find(c => c.name === a.cat) || {}).slug;
+      if (slug !== cat) return false;
+    }
+    if (search) {
+      const hay = (a.name + ' ' + (a.desc || '') + ' ' + a.cat).toLowerCase();
+      if (!hay.includes(search)) return false;
+    }
+    return true;
+  });
+
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">🔍</div>
+        <h3 class="empty-title">Nessuna app trovata</h3>
+        <p>Prova con un altro termine o seleziona un'altra categoria.</p>
+      </div>`;
+    return;
+  }
+
+  // Group by category, in defined order
+  const grouped = {};
+  filtered.forEach(a => {
+    const k = a.cat;
+    if (!grouped[k]) grouped[k] = [];
+    grouped[k].push(a);
+  });
+
+  let html = '';
+  DATA.categories.forEach(c => {
+    if (!grouped[c.name]) return;
+    html += `<div class="cat-block" id="cat-${c.slug}">`;
+    html += `<div class="cat-header">`;
+    html += `<div class="cat-header-row">`;
+    html += `<h2><span class="cat-header-emoji">${c.emoji}</span> ${escapeHtml(c.short)}</h2>`;
+    html += `<span class="cat-header-count">${grouped[c.name].length} app</span>`;
+    html += `</div>`;
+    html += `<p class="cat-header-tagline">${escapeHtml(c.tagline)}</p>`;
+    html += `</div>`;
+    html += `<div class="app-grid">`;
+    grouped[c.name].forEach(a => {
+      const desc = a.desc || '';
+      html += `<article class="app-card">`;
+      html += `<div class="app-card-head">`;
+      html += `<h3 class="app-name">${escapeHtml(a.name)}</h3>`;
+      html += `<span class="app-date">${a.date}</span>`;
+      html += `</div>`;
+      if (desc) {
+        // Tronca descrizioni lunghe
+        const short = desc.length > 200 ? desc.slice(0, 200).trim() + '…' : desc;
+        html += `<p class="app-desc">${escapeHtml(short)}</p>`;
+      } else {
+        html += `<p class="app-desc empty">Strumento dell'ecosistema PezzaliAPP.</p>`;
+      }
+      html += `<div class="app-actions">`;
+      html += `<a class="app-action primary" href="${escapeAttr(primaryUrl(a))}" target="_blank" rel="noopener">Apri</a>`;
+      html += `<a class="app-action secondary" href="${escapeAttr(fallbackUrl(a))}" target="_blank" rel="noopener" title="Versione GitHub Pages">Mirror</a>`;
+      html += `<a class="app-action ghost" href="${escapeAttr(a.repo)}" target="_blank" rel="noopener" title="Codice sorgente">‹/›</a>`;
+      html += `</div>`;
+      html += `</article>`;
+    });
+    html += `</div></div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+// ===== Search wiring =====
+const searchInput = $('#search');
+const searchClear = $('#search-clear');
+
+searchInput.addEventListener('input', e => {
+  currentFilter.search = e.target.value;
+  searchClear.classList.toggle('visible', !!e.target.value);
+  renderApps();
+});
+
+searchClear.addEventListener('click', () => {
+  searchInput.value = '';
+  currentFilter.search = '';
+  searchClear.classList.remove('visible');
+  renderApps();
+  searchInput.focus();
+});
+
+document.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    e.preventDefault();
+    searchInput.focus();
+    searchInput.select();
+  }
+  if (e.key === 'Escape' && document.activeElement === searchInput) {
+    searchInput.value = '';
+    currentFilter.search = '';
+    searchClear.classList.remove('visible');
+    renderApps();
+  }
+});
+
+// ===== Initial render =====
+renderFeatured();
+renderCatNav();
+renderApps();
+
+// ===== Service worker (PWA) =====
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
+}
+</script>
 
 </body>
 </html>
