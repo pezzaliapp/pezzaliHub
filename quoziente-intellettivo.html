@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Test del Quoziente Intellettivo · PezzaliHub</title>
+<meta name="description" content="Test del Quoziente Intellettivo basato su ICAR-16 (Condon & Revelle, 2014). 16 item, 4 sottoscale, ~15 minuti. Report scientifico opzionale via email.">
+<meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="Test del Quoziente Intellettivo · PezzaliHub">
+<meta property="og:description" content="Stima del QI basata su ICAR-16 — il test scientifico pubblicato da Condon & Revelle (2014). 16 domande, 15 minuti, report personalizzato via email.">
+<meta property="og:url" content="https://pezzalihub.app/quoziente-intellettivo.html">
+<meta property="og:type" content="website">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+  /* ============ APPLE STYLE FOUNDATION (synced with index.html) ============ */
+  :root {
+    --bg: #ffffff;
+    --bg-alt: #f5f5f7;
+    --bg-card: #ffffff;
+    --bg-section: #fbfbfd;
+    --bg-hero: #000000;
+    --text: #1d1d1f;
+    --text-secondary: #515154;
+    --text-tertiary: #86868b;
+    --text-on-dark: #f5f5f7;
+    --text-on-dark-dim: #a1a1a6;
+    --border: #d2d2d7;
+    --border-light: #e8e8ed;
+    --link: #0066cc;
+    --link-hover: #0052a3;
+    --accent: #0071e3;
+    --accent-hover: #0077ed;
+    --warn-bg: #fff8e1;
+    --warn-border: #f0d27a;
+    --warn-text: #5a4400;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    --radius-xl: 28px;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.10);
+    --nav-h: 48px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #000000;
+      --bg-alt: #161617;
+      --bg-card: #1d1d1f;
+      --bg-section: #0a0a0a;
+      --text: #f5f5f7;
+      --text-secondary: #a1a1a6;
+      --text-tertiary: #6e6e73;
+      --border: #2c2c2e;
+      --border-light: #1f1f21;
+      --link: #2997ff;
+      --link-hover: #5eb1ff;
+      --accent: #2997ff;
+      --accent-hover: #5eb1ff;
+      --warn-bg: #2a2417;
+      --warn-border: #6b5320;
+      --warn-text: #f3d97c;
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.7);
+    }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+                 "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.47;
+    letter-spacing: -0.022em;
+    font-size: 17px;
+  }
+
+  a { color: var(--link); text-decoration: none; transition: color 0.15s ease; }
+  a:hover { color: var(--link-hover); }
+
+  button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+  /* ============ NAV ============ */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(245, 245, 247, 0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    height: var(--nav-h);
+    border-bottom: 1px solid var(--border-light);
+  }
+  @media (prefers-color-scheme: dark) {
+    .nav { background: rgba(22, 22, 23, 0.72); }
+  }
+  .nav-inner {
+    max-width: 1024px;
+    margin: 0 auto;
+    height: 100%;
+    padding: 0 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-brand {
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .nav-brand:hover { color: var(--text); }
+  .nav-back {
+    font-size: 14px;
+    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.15s ease;
+  }
+  .nav-back:hover { color: var(--text); }
+  .nav-links {
+    display: flex;
+    gap: 24px;
+    font-size: 12px;
+    font-weight: 400;
+  }
+  .nav-links a {
+    color: var(--text);
+    opacity: 0.8;
+    transition: opacity 0.15s;
+  }
+  .nav-links a:hover { opacity: 1; }
+  @media (max-width: 720px) {
+    .nav-links { display: none; }
+  }
+
+  /* ============ SECTIONS ============ */
+  section {
+    padding: 80px 22px;
+  }
+  section.tight { padding: 56px 22px; }
+  .section-inner {
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+  .section-title {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.08;
+    text-align: center;
+    margin-bottom: 14px;
+  }
+  .section-sub {
+    font-size: 19px;
+    color: var(--text-secondary);
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 48px;
+    line-height: 1.4;
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    background: var(--bg-section);
+    padding: 56px 22px 40px;
+    border-top: 1px solid var(--border-light);
+    color: var(--text-tertiary);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .footer-inner {
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+  .footer-cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 32px;
+    margin-bottom: 40px;
+  }
+  .footer-col h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .footer-col a {
+    color: var(--text-secondary);
+    font-size: 13px;
+  }
+  .footer-col a:hover { color: var(--text); }
+  .footer-bottom {
+    border-top: 1px solid var(--border-light);
+    padding-top: 24px;
+    text-align: center;
+  }
+
+  /* ============ QI PAGE-SPECIFIC ============ */
+  .qi-hero {
+    background: var(--bg-hero);
+    color: var(--text-on-dark);
+    text-align: center;
+    padding: 72px 22px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .qi-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 0%, rgba(41, 151, 255, 0.18), transparent),
+      radial-gradient(ellipse 80% 50% at 50% 100%, rgba(120, 80, 220, 0.10), transparent);
+    pointer-events: none;
+  }
+  .qi-hero-inner { position: relative; max-width: 820px; margin: 0 auto; }
+  .qi-hero-eyebrow {
+    font-size: 15px;
+    color: #a1a1a6;
+    margin-bottom: 12px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .qi-hero-title {
+    font-size: clamp(34px, 6.4vw, 60px);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+    margin-bottom: 16px;
+    background: linear-gradient(180deg, #ffffff 30%, #a1a1a6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .qi-hero-sub {
+    font-size: clamp(17px, 2.4vw, 22px);
+    font-weight: 400;
+    color: #f5f5f7;
+    letter-spacing: -0.012em;
+    max-width: 700px;
+    margin: 0 auto 28px;
+    line-height: 1.4;
+  }
+  .qi-hero-stats {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    justify-content: center;
+    font-size: 14px;
+    color: #a1a1a6;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 10px 20px;
+    border-radius: 980px;
+  }
+  .qi-hero-stats strong {
+    color: #f5f5f7;
+    font-weight: 500;
+  }
+
+  /* "Come funziona" */
+  .qi-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 720px) {
+    .qi-steps { grid-template-columns: 1fr; }
+  }
+  .qi-step {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 28px 24px;
+    text-align: left;
+    box-shadow: var(--shadow-sm);
+  }
+  .qi-step-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(0, 113, 227, 0.10);
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    font-size: 22px;
+  }
+  .qi-step-num {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .qi-step-title {
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.018em;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+  .qi-step-desc {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  /* Iframe wrap */
+  .qi-iframe-section {
+    background: var(--bg-section);
+  }
+  .qi-iframe-wrap {
+    max-width: 920px;
+    margin: 0 auto;
+  }
+  .qi-iframe-wrap iframe {
+    display: block;
+    background: var(--bg-card);
+  }
+
+  /* Disclaimer */
+  .qi-disclaimer-box {
+    max-width: 820px;
+    margin: 0 auto;
+    background: var(--warn-bg);
+    border: 1px solid var(--warn-border);
+    color: var(--warn-text);
+    border-radius: var(--radius-lg);
+    padding: 22px 26px;
+    font-size: 15px;
+    line-height: 1.55;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .qi-disclaimer-icon {
+    flex-shrink: 0;
+    font-size: 22px;
+    line-height: 1;
+    padding-top: 2px;
+  }
+  .qi-disclaimer-box strong { font-weight: 600; }
+
+  /* Sources */
+  .qi-sources {
+    max-width: 820px;
+    margin: 0 auto;
+  }
+  .qi-sources ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .qi-sources li {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+  .qi-sources li strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .qi-sources a { word-break: break-word; }
+
+  @media (max-width: 720px) {
+    section { padding: 56px 16px; }
+    .qi-hero { padding: 48px 16px 36px; }
+    .nav-inner { padding: 0 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-brand">PezzaliHub</a>
+    <div class="nav-links">
+      <a href="/" class="nav-back">← Torna alla home</a>
+      <a href="https://github.com/pezzaliapp/quoziente-intellettivo" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.alessandropezzali.it" target="_blank" rel="noopener">Sito autore</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="qi-hero">
+  <div class="qi-hero-inner">
+    <p class="qi-hero-eyebrow">PezzaliHub · Scienza</p>
+    <h1 class="qi-hero-title">Test del Quoziente Intellettivo</h1>
+    <p class="qi-hero-sub">
+      Stima del QI basata su <strong>ICAR-16</strong> — il test scientifico pubblicato da Condon &amp; Revelle (2014).
+      16 domande, 15 minuti, report personalizzato via email.
+    </p>
+    <div class="qi-hero-stats">
+      <span><strong>16</strong> item</span>
+      <span><strong>4</strong> sottoscale</span>
+      <span><strong>r ≈ 0.80</strong> con WAIS</span>
+    </div>
+  </div>
+</section>
+
+<!-- COME FUNZIONA -->
+<section class="tight">
+  <div class="section-inner">
+    <h2 class="section-title">Come funziona.</h2>
+    <p class="section-sub">Tre passaggi, un test scientifico nel browser.</p>
+    <div class="qi-steps">
+      <div class="qi-step">
+        <div class="qi-step-icon">📝</div>
+        <div class="qi-step-num">1. Rispondi</div>
+        <div class="qi-step-title">16 domande di ragionamento</div>
+        <p class="qi-step-desc">Ragionamento verbale, induttivo, matriciale e visuospaziale. Senza limite di tempo rigido.</p>
+      </div>
+      <div class="qi-step">
+        <div class="qi-step-icon">📊</div>
+        <div class="qi-step-num">2. Calcoliamo</div>
+        <div class="qi-step-title">Punteggio convertito in QI</div>
+        <p class="qi-step-desc">Conversione con norme pubblicate da Condon &amp; Revelle (M = 100, IC95% ±13). Calcolo locale, nessun dato inviato.</p>
+      </div>
+      <div class="qi-step">
+        <div class="qi-step-icon">📧</div>
+        <div class="qi-step-num">3. Ricevi il report</div>
+        <div class="qi-step-title">Profilo dettagliato via email</div>
+        <p class="qi-step-desc">Profilo per sottoscala con interpretazione qualitativa. Solo se decidi di lasciare la tua email — è opzionale.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IFRAME -->
+<section class="qi-iframe-section tight">
+  <div class="section-inner">
+    <h2 class="section-title">Avvia il test.</h2>
+    <p class="section-sub">Il test è incorporato qui sotto. Puoi farlo in modalità anonima.</p>
+    <div class="qi-iframe-wrap">
+      <iframe
+        src="https://www.alessandropezzali.it/quoziente-intellettivo/embed_standalone.html"
+        width="100%"
+        style="border:0;min-height:600px;border-radius:18px;box-shadow:var(--shadow-lg);"
+        loading="lazy"
+        title="Test Quoziente Intellettivo"
+        id="qi-iframe">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<!-- DISCLAIMER -->
+<section class="tight">
+  <div class="section-inner">
+    <div class="qi-disclaimer-box">
+      <div class="qi-disclaimer-icon">⚠️</div>
+      <div>
+        <strong>Disclaimer.</strong>
+        Questo test è uno strumento educativo basato su ricerca scientifica, ma <strong>non sostituisce una valutazione clinica</strong>.
+        In Italia, la diagnosi formale del QI è riservata a psicologi iscritti all'Albo (L. 56/89).
+        La traduzione italiana degli item verbali non è validata su campione italiano.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FONTI -->
+<section class="tight">
+  <div class="section-inner">
+    <h2 class="section-title">Fonti.</h2>
+    <p class="section-sub">Tutto il materiale è pubblicato e verificabile.</p>
+    <div class="qi-sources">
+      <ul>
+        <li>
+          <strong>Condon, D. M., &amp; Revelle, W. (2014).</strong>
+          The international cognitive ability resource: Development and initial validation of a public-domain measure.
+          <em>Intelligence, 43</em>, 52–64.
+          <a href="https://doi.org/10.1016/j.intell.2014.01.004" target="_blank" rel="noopener">doi.org/10.1016/j.intell.2014.01.004</a>
+        </li>
+        <li>
+          <strong>ICAR Project</strong> — repository pubblico degli item.
+          <a href="https://icar-project.com" target="_blank" rel="noopener">icar-project.com</a>
+        </li>
+        <li>
+          <strong>Codice del test</strong> — implementazione open source.
+          <a href="https://github.com/pezzaliapp/quoziente-intellettivo" target="_blank" rel="noopener">github.com/pezzaliapp/quoziente-intellettivo</a>
+        </li>
+        <li>
+          <strong>Licenze.</strong>
+          Item ICAR rilasciati sotto Creative Commons. Codice di questa implementazione: <strong>CC BY-SA 4.0</strong>.
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-cols">
+      <div class="footer-col">
+        <h4>PezzaliHub</h4>
+        <ul>
+          <li><a href="/">Tutte le app</a></li>
+          <li><a href="/#featured">In evidenza</a></li>
+          <li><a href="https://www.pezzaliapp.com" target="_blank" rel="noopener">Sito principale</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Per il lavoro</h4>
+        <ul>
+          <li><a href="/#cat-commerciale">Commerciali</a></li>
+          <li><a href="/#cat-officina">Officina</a></li>
+          <li><a href="/#cat-ai">AI &amp; Assistenti</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Per esplorare</h4>
+        <ul>
+          <li><a href="/#cat-musica">Musica</a></li>
+          <li><a href="/#cat-scienza">Scienza</a></li>
+          <li><a href="/#cat-giochi">Giochi</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Autore</h4>
+        <ul>
+          <li><a href="https://www.alessandropezzali.it" target="_blank" rel="noopener">alessandropezzali.it</a></li>
+          <li><a href="https://github.com/pezzaliapp" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/pezzaliapp/" target="_blank" rel="noopener">LinkedIn</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Alessandro Pezzali · pezzalihub.app · Tutto il codice è open source su GitHub.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Auto-resize iframe via postMessage from embed_standalone.html
+  window.addEventListener('message', (e) => {
+    if (e.data && e.data.type === 'qi:height') {
+      const f = document.getElementById('qi-iframe');
+      if (f) f.style.height = e.data.value + 'px';
+    }
+  });
+</script>
+
+</body>
+</html>
