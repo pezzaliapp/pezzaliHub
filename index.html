@@ -1,942 +1,101 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>PezzaliHub</title>
-  <meta name="description" content="Launcher PWA per le app e i progetti dell'ecosistema PezzaliAPP." />
-  <meta name="theme-color" content="#f5f5f7" />
-  <link rel="manifest" href="manifest.json" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PezzaliHub</title>
 
-  <style>
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    :root {
-      --bg: #f5f5f7;
-      --panel: rgba(255,255,255,.74);
-      --panel-strong: #ffffff;
-      --text: #1d1d1f;
-      --muted: #6e6e73;
-      --line: rgba(0,0,0,.08);
-      --shadow: 0 18px 55px rgba(0,0,0,.08);
-      --shadow-strong: 0 28px 80px rgba(0,0,0,.14);
-      --accent: #0071e3;
-    }
+<style>
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+  background:#f5f5f7;
+  color:#1d1d1f;
+}
 
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #0b0b0f;
-        --panel: rgba(28,28,32,.72);
-        --panel-strong: #1c1c20;
-        --text: #f5f5f7;
-        --muted: #a1a1a6;
-        --line: rgba(255,255,255,.11);
-        --shadow: 0 18px 55px rgba(0,0,0,.38);
-        --shadow-strong: 0 28px 90px rgba(0,0,0,.55);
-        --accent: #2997ff;
-      }
-    }
+header{
+  padding:20px;
+  font-weight:600;
+  font-size:20px;
+}
 
-    body.light {
-      --bg: #f5f5f7;
-      --panel: rgba(255,255,255,.74);
-      --panel-strong: #ffffff;
-      --text: #1d1d1f;
-      --muted: #6e6e73;
-      --line: rgba(0,0,0,.08);
-      --shadow: 0 18px 55px rgba(0,0,0,.08);
-      --shadow-strong: 0 28px 80px rgba(0,0,0,.14);
-      --accent: #0071e3;
-    }
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:20px;
+}
 
-    body.dark {
-      --bg: #0b0b0f;
-      --panel: rgba(28,28,32,.72);
-      --panel-strong: #1c1c20;
-      --text: #f5f5f7;
-      --muted: #a1a1a6;
-      --line: rgba(255,255,255,.11);
-      --shadow: 0 18px 55px rgba(0,0,0,.38);
-      --shadow-strong: 0 28px 90px rgba(0,0,0,.55);
-      --accent: #2997ff;
-    }
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:16px;
+}
 
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
-      background:
-        radial-gradient(circle at 15% -10%, rgba(0,113,227,.18), transparent 32%),
-        radial-gradient(circle at 85% 0%, rgba(90,200,250,.16), transparent 30%),
-        linear-gradient(180deg, var(--bg), var(--bg));
-      color: var(--text);
-    }
+.card{
+  background:white;
+  border-radius:16px;
+  padding:20px;
+  text-decoration:none;
+  color:inherit;
+  box-shadow:0 5px 15px rgba(0,0,0,0.05);
+  transition:0.2s;
+}
 
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      background: color-mix(in srgb, var(--bg) 80%, transparent);
-      border-bottom: 1px solid var(--line);
-    }
+.card:hover{
+  transform:translateY(-3px);
+}
 
-    .topbar {
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 15px 22px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-    }
+.title{
+  font-weight:600;
+  margin-top:10px;
+}
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 0;
-    }
-
-    .brand-mark {
-      width: 38px;
-      height: 38px;
-      border-radius: 12px;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(145deg, #111114, #3a3a40);
-      color: #fff;
-      font-weight: 800;
-      font-size: 13px;
-      letter-spacing: -.06em;
-      box-shadow: 0 10px 26px rgba(0,0,0,.18);
-      flex: 0 0 auto;
-    }
-
-    .brand-text strong {
-      display:block;
-      font-size: 20px;
-      letter-spacing: -.055em;
-      line-height: 1;
-    }
-
-    .brand-text span {
-      display:block;
-      margin-top: 4px;
-      color: var(--muted);
-      font-size: 12px;
-      white-space: nowrap;
-    }
-
-    .top-actions {
-      display: flex;
-      gap: 9px;
-      align-items: center;
-    }
-
-    button {
-      border: 0;
-      font: inherit;
-      cursor: pointer;
-      color: inherit;
-    }
-
-    .pill {
-      border: 1px solid var(--line);
-      background: var(--panel);
-      border-radius: 999px;
-      padding: 9px 13px;
-      box-shadow: 0 8px 22px rgba(0,0,0,.05);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      font-size: 13px;
-    }
-
-    main {
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 38px 22px 46px;
-    }
-
-    .hero {
-      padding: 28px 0 26px;
-      display: grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap: 24px;
-      align-items: end;
-    }
-
-    .hero h1 {
-      margin: 0;
-      max-width: 760px;
-      font-size: clamp(42px, 7vw, 84px);
-      line-height: .92;
-      letter-spacing: -.08em;
-      font-weight: 900;
-    }
-
-    .hero p {
-      margin: 18px 0 0;
-      color: var(--muted);
-      max-width: 640px;
-      font-size: clamp(17px, 2vw, 22px);
-      line-height: 1.35;
-      letter-spacing: -.035em;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-
-    .stat {
-      border: 1px solid var(--line);
-      background: var(--panel);
-      border-radius: 24px;
-      padding: 18px;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-    }
-
-    .stat b {
-      display:block;
-      font-size: 30px;
-      letter-spacing: -.06em;
-    }
-
-    .stat span {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .control-panel {
-      margin-top: 18px;
-      border: 1px solid var(--line);
-      background: var(--panel);
-      border-radius: 30px;
-      padding: 16px;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-    }
-
-    .search {
-      position: relative;
-    }
-
-    .search input {
-      width: 100%;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      background: var(--panel-strong);
-      color: var(--text);
-      outline: none;
-      padding: 15px 16px 15px 46px;
-      font-size: 16px;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.18);
-    }
-
-    .search::before {
-      content: "⌕";
-      position:absolute;
-      left: 17px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--muted);
-      font-size: 23px;
-      z-index: 1;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 8px;
-      padding-top: 13px;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-
-    .tabs::-webkit-scrollbar { display:none; }
-
-    .tab {
-      white-space: nowrap;
-      border: 1px solid var(--line);
-      background: color-mix(in srgb, var(--panel-strong) 82%, transparent);
-      color: var(--muted);
-      border-radius: 999px;
-      padding: 10px 14px;
-      font-size: 13px;
-    }
-
-    .tab.active {
-      color: #fff;
-      background: #1d1d1f;
-      border-color: #1d1d1f;
-    }
-
-    body.dark .tab.active { background:#f5f5f7; color:#111; border-color:#f5f5f7; }
-
-    .section-title {
-      margin: 30px 0 16px;
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 14px;
-    }
-
-    .section-title h2 {
-      margin: 0;
-      font-size: 24px;
-      letter-spacing: -.055em;
-    }
-
-    .section-title span {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-    }
-
-    .app-card {
-      position: relative;
-      overflow: hidden;
-      min-height: 208px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      text-decoration: none;
-      color: inherit;
-      border: 1px solid var(--line);
-      background: var(--panel);
-      border-radius: 28px;
-      padding: 20px;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      animation: rise .42s ease both;
-      transition: transform .20s ease, box-shadow .20s ease, background .20s ease;
-    }
-
-    .app-card:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--shadow-strong);
-      background: color-mix(in srgb, var(--panel-strong) 88%, transparent);
-    }
-
-    .app-card:active { transform: scale(.985); }
-
-    .app-card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      transition: opacity .22s ease;
-      pointer-events: none;
-      background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,.55), transparent 34%);
-    }
-
-    .app-card:hover::after { opacity: .7; }
-
-    .app-top {
-      position:relative;
-      z-index:1;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
-    }
-
-    .icon {
-      width: 58px;
-      height: 58px;
-      border-radius: 18px;
-      display: grid;
-      place-items: center;
-      font-weight: 850;
-      letter-spacing: -.08em;
-      font-size: 15px;
-      color: #fff;
-      background: linear-gradient(145deg, #0071e3, #5ac8fa);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.45), 0 12px 28px rgba(0,113,227,.22);
-    }
-
-    .type {
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.18);
-      color: var(--muted);
-      font-size: 11px;
-      border-radius: 999px;
-      padding: 5px 8px;
-      text-transform: uppercase;
-      letter-spacing: .04em;
-    }
-
-    .app-body {
-      position:relative;
-      z-index:1;
-    }
-
-    .app-body h3 {
-      margin: 18px 0 7px;
-      font-size: 20px;
-      line-height: 1.05;
-      letter-spacing: -.055em;
-    }
-
-    .app-body p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.38;
-    }
-
-    .open {
-      position:relative;
-      z-index:1;
-      margin-top: 18px;
-      color: var(--accent);
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .empty {
-      display:none;
-      text-align:center;
-      color: var(--muted);
-      padding: 48px 0;
-    }
-
-    footer {
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 12px 22px 42px;
-      color: var(--muted);
-      display:flex;
-      justify-content:space-between;
-      gap:20px;
-      flex-wrap:wrap;
-      font-size:13px;
-    }
-
-    @keyframes rise {
-      from { opacity:0; transform: translateY(14px); }
-      to { opacity:1; transform: translateY(0); }
-    }
-
-    @media (max-width: 980px) {
-      .hero { grid-template-columns: 1fr; }
-      .stats { max-width: 420px; }
-      .grid { grid-template-columns: repeat(3, 1fr); }
-    }
-
-    @media (max-width: 720px) {
-      main { padding: 28px 16px 36px; }
-      .topbar { padding: 13px 16px; }
-      .brand-text span { display:none; }
-      .hero { padding-top: 18px; }
-      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .grid { grid-template-columns: repeat(2, 1fr); gap: 13px; }
-      .app-card { min-height: 184px; border-radius: 24px; padding: 16px; }
-      .icon { width: 52px; height: 52px; border-radius: 16px; font-size: 14px; }
-      .app-body h3 { font-size: 17px; }
-      .app-body p { font-size: 12.5px; }
-    }
-
-    @media (max-width: 390px) {
-      .grid { grid-template-columns: 1fr; }
-    }
-  </style>
+.desc{
+  font-size:13px;
+  color:#6e6e73;
+}
+</style>
 </head>
 
 <body>
-  <header>
-    <div class="topbar">
-      <div class="brand">
-        <div class="brand-mark">PH</div>
-        <div class="brand-text">
-          <strong>PezzaliHub</strong>
-          <span>Launcher PWA per app operative</span>
-        </div>
-      </div>
-      <div class="top-actions">
-        <button class="pill" id="installBtn" hidden>Installa</button>
-        <button class="pill" id="themeBtn" title="Cambia tema">◐</button>
-      </div>
-    </div>
-  </header>
 
-  <main>
-    <section class="hero">
-      <div>
-        <h1>Le app giuste. Nel posto giusto.</h1>
-        <p>PezzaliHub raccoglie strumenti, PWA e progetti dell’ecosistema PezzaliAPP in un launcher semplice, veloce e ordinato.</p>
-      </div>
-      <div class="stats">
-        <div class="stat"><b id="totalCount">0</b><span>app e progetti</span></div>
-        <div class="stat"><b id="liveCount">0</b><span>link pubblici verificati</span></div>
-      </div>
-    </section>
+<header>PezzaliHub</header>
 
-    <section class="control-panel">
-      <div class="search">
-        <input id="searchInput" type="search" placeholder="Cerca app, funzione o categoria..." autocomplete="off" />
-      </div>
-      <div class="tabs" id="tabs"></div>
-    </section>
+<div class="container">
+  <div class="grid">
 
-    <section>
-      <div class="section-title">
-        <h2>Launcher</h2>
-        <span id="countLabel"></span>
-      </div>
-      <div class="grid" id="appGrid"></div>
-      <div class="empty" id="emptyState">Nessuna app trovata.</div>
-    </section>
-  </main>
+    <a class="card" href="https://www.pezzaliapp.com" target="_blank">
+      <div class="title">PezzaliAPP</div>
+      <div class="desc">Sito principale</div>
+    </a>
 
-  <footer>
-    <div>© 2026 PezzaliHub</div>
-    <div>Keep it simple.</div>
-  </footer>
+    <a class="card" href="https://www.alessandropezzali.it/CSVXpressSmart/" target="_blank">
+      <div class="title">CSVXpressSmart</div>
+      <div class="desc">Listini e margini</div>
+    </a>
 
-  <script>
-    const apps = [
-  {
-    "name": "PezzaliAPP",
-    "desc": "Sito principale dell’ecosistema.",
-    "cat": "Core",
-    "icon": "PH",
-    "url": "https://www.pezzaliapp.com",
-    "type": "live"
-  },
-  {
-    "name": "Alessandro Pezzali",
-    "desc": "Sito personale e raccolta progetti.",
-    "cat": "Core",
-    "icon": "AP",
-    "url": "https://www.alessandropezzali.it/",
-    "type": "live"
-  },
-  {
-    "name": "CSVXpressSmart",
-    "desc": "Listini, margini, preventivi e analisi commerciale.",
-    "cat": "Business",
-    "icon": "CSV",
-    "url": "https://www.alessandropezzali.it/CSVXpressSmart/",
-    "type": "live"
-  },
-  {
-    "name": "CheckappExcel",
-    "desc": "Controllo e confronto dati Excel/CSV.",
-    "cat": "Business",
-    "icon": "XLS",
-    "url": "https://www.alessandropezzali.it/CheckappExcel/",
-    "type": "live"
-  },
-  {
-    "name": "Sales Canvas",
-    "desc": "Analisi rapida di valore, CAC, CLV e modello vendita.",
-    "cat": "Business",
-    "icon": "SLS",
-    "url": "https://www.alessandropezzali.it/Sales-Canvas/",
-    "type": "live"
-  },
-  {
-    "name": "CRM-PWA",
-    "desc": "Base CRM personale per attività commerciale.",
-    "cat": "Business",
-    "icon": "CRM",
-    "url": "https://github.com/pezzaliapp/CRM-PWA",
-    "type": "repo"
-  },
-  {
-    "name": "EBITAPP",
-    "desc": "Analisi economica e indicatori operativi.",
-    "cat": "Business",
-    "icon": "EBT",
-    "url": "https://github.com/pezzaliapp/EBITAPP",
-    "type": "repo"
-  },
-  {
-    "name": "NETTIXpress",
-    "desc": "Strumenti per prezzi netti e logiche di listino.",
-    "cat": "Business",
-    "icon": "NET",
-    "url": "https://github.com/pezzaliapp/NETTIXpress",
-    "type": "repo"
-  },
-  {
-    "name": "PriceXpress",
-    "desc": "Tool pricing e preventivazione.",
-    "cat": "Business",
-    "icon": "€",
-    "url": "https://github.com/pezzaliapp/PriceXpress",
-    "type": "repo"
-  },
-  {
-    "name": "EasyPrice",
-    "desc": "Calcolo prezzo semplice e rapido.",
-    "cat": "Business",
-    "icon": "PR",
-    "url": "https://github.com/pezzaliapp/EasyPrice",
-    "type": "repo"
-  },
-  {
-    "name": "MCINV",
-    "desc": "Modulo gestione inventario / margini.",
-    "cat": "Business",
-    "icon": "INV",
-    "url": "https://github.com/pezzaliapp/MCINV",
-    "type": "repo"
-  },
-  {
-    "name": "SwissSale",
-    "desc": "Vendita e simulazioni commerciali.",
-    "cat": "Business",
-    "icon": "CH",
-    "url": "https://github.com/pezzaliapp/SwissSale",
-    "type": "repo"
-  },
-  {
-    "name": "Kit Responsabile Vendite",
-    "desc": "Toolkit operativo per responsabili commerciali.",
-    "cat": "Business",
-    "icon": "KIT",
-    "url": "https://github.com/pezzaliapp/KitResponsabileVendite",
-    "type": "repo"
-  },
-  {
-    "name": "VisitePlanner",
-    "desc": "Pianificazione visite commerciali.",
-    "cat": "Business",
-    "icon": "VP",
-    "url": "https://github.com/pezzaliapp/VisitePlanner",
-    "type": "repo"
-  },
-  {
-    "name": "VisiteMap",
-    "desc": "Mappa e gestione visite clienti.",
-    "cat": "Business",
-    "icon": "MAP",
-    "url": "https://github.com/pezzaliapp/VisiteMap",
-    "type": "repo"
-  },
-  {
-    "name": "TechAssist AI",
-    "desc": "Supporto tecnico e procedure operative assistite.",
-    "cat": "Officina",
-    "icon": "TA",
-    "url": "https://www.alessandropezzali.it/TechAssist-AI-by-PezzaliApp/",
-    "type": "live"
-  },
-  {
-    "name": "Gommista Pro Assistant",
-    "desc": "Assistente AI per vendita, trend, tecnico e ROI.",
-    "cat": "Officina",
-    "icon": "GP",
-    "url": "https://gommistapro-assistant.alessandropezzali.it/",
-    "type": "live"
-  },
-  {
-    "name": "Calcolatrice Allineamenti",
-    "desc": "Calcoli tecnici per allineamenti e assetto.",
-    "cat": "Officina",
-    "icon": "AL",
-    "url": "https://github.com/pezzaliapp/CALCOLATRICE-ALLINEAMENTI",
-    "type": "repo"
-  },
-  {
-    "name": "CertifiLIFT",
-    "desc": "Strumenti e certificazioni per sollevatori.",
-    "cat": "Officina",
-    "icon": "LF",
-    "url": "https://github.com/pezzaliapp/CertifiLIFT",
-    "type": "repo"
-  },
-  {
-    "name": "Cascos",
-    "desc": "Configurazione e supporto attrezzature Cascos.",
-    "cat": "Officina",
-    "icon": "CS",
-    "url": "https://github.com/pezzaliapp/cascos",
-    "type": "repo"
-  },
-  {
-    "name": "Cascos App",
-    "desc": "App dedicata area Cascos.",
-    "cat": "Officina",
-    "icon": "CA",
-    "url": "https://github.com/pezzaliapp/cascos_app",
-    "type": "repo"
-  },
-  {
-    "name": "TyreXpress",
-    "desc": "Strumenti per servizio gomme e pneumatici.",
-    "cat": "Officina",
-    "icon": "TX",
-    "url": "https://github.com/pezzaliapp/TyreXpress",
-    "type": "repo"
-  },
-  {
-    "name": "Attrezzature per Gommisti",
-    "desc": "Catalogo e progetto web per attrezzature officina/gomme.",
-    "cat": "Officina",
-    "icon": "AG",
-    "url": "https://github.com/pezzaliapp/attrezzaturepergommisti",
-    "type": "repo"
-  },
-  {
-    "name": "Trasporti Cormach",
-    "desc": "Modulo trasporti e doppia forbice / BatteryLift.",
-    "cat": "Officina",
-    "icon": "TR",
-    "url": "https://github.com/pezzaliapp/TrasportiCormach-DoppiaForbice-BatteryLift",
-    "type": "repo"
-  },
-  {
-    "name": "TriageFirst",
-    "desc": "PWA sperimentale di triage informativo.",
-    "cat": "AI",
-    "icon": "TF",
-    "url": "https://www.alessandropezzali.it/triagefirst/",
-    "type": "live"
-  },
-  {
-    "name": "ScanX",
-    "desc": "Scanner e workflow dati/documenti.",
-    "cat": "Utility",
-    "icon": "SX",
-    "url": "https://github.com/pezzaliapp/ScanX",
-    "type": "repo"
-  },
-  {
-    "name": "RemoteGlasses",
-    "desc": "Esperimento remoto / assistenza visiva.",
-    "cat": "Utility",
-    "icon": "RG",
-    "url": "https://github.com/pezzaliapp/RemoteGlasses",
-    "type": "repo"
-  },
-  {
-    "name": "AccessTracker Remote Control",
-    "desc": "Tracciamento accessi e controllo remoto.",
-    "cat": "Utility",
-    "icon": "AT",
-    "url": "https://github.com/pezzaliapp/AccessTracker_Remote_Control",
-    "type": "repo"
-  },
-  {
-    "name": "FerryGuard",
-    "desc": "Sistema SOS LoRa per traghetti.",
-    "cat": "Utility",
-    "icon": "FG",
-    "url": "https://github.com/pezzaliapp/FerryGuard",
-    "type": "repo"
-  },
-  {
-    "name": "AirQuality Monitor",
-    "desc": "Monitoraggio qualità aria / hardware PWA.",
-    "cat": "Utility",
-    "icon": "AQ",
-    "url": "https://www.alessandropezzali.it/",
-    "type": "live"
-  },
-  {
-    "name": "FlexiLift",
-    "desc": "PWA hardware per sollevatore connesso.",
-    "cat": "Utility",
-    "icon": "FL",
-    "url": "https://www.alessandropezzali.it/",
-    "type": "live"
-  },
-  {
-    "name": "thinkair BLE",
-    "desc": "Esperimento BLE / qualità aria.",
-    "cat": "Utility",
-    "icon": "BLE",
-    "url": "https://github.com/pezzaliapp/thinkair-ble",
-    "type": "repo"
-  },
-  {
-    "name": "djApp",
-    "desc": "Console DJ browser-based installabile.",
-    "cat": "Creative",
-    "icon": "DJ",
-    "url": "https://www.alessandropezzali.it/djapp/",
-    "type": "live"
-  },
-  {
-    "name": "RubikAPP",
-    "desc": "Cubo di Rubik 3D PWA.",
-    "cat": "Creative",
-    "icon": "RB",
-    "url": "https://www.alessandropezzali.it/RubikAPP/readme.html",
-    "type": "live"
-  },
-  {
-    "name": "KubeApp",
-    "desc": "Risolutore 3×3 con inserimento colori.",
-    "cat": "Creative",
-    "icon": "KB",
-    "url": "https://www.alessandropezzali.it/soluzione_rubik/index.html",
-    "type": "live"
-  },
-  {
-    "name": "Cashflow Rush",
-    "desc": "Gioco/learning su carriera e flussi di cassa.",
-    "cat": "Creative",
-    "icon": "CF",
-    "url": "https://www.alessandropezzali.it/CashflowRushPWA/",
-    "type": "live"
-  },
-  {
-    "name": "Quantum Simulator",
-    "desc": "Esperimento didattico di simulazione quantistica.",
-    "cat": "Lab",
-    "icon": "QS",
-    "url": "https://www.alessandropezzali.it/quantum-simulator/fenditura.html",
-    "type": "live"
-  },
-  {
-    "name": "HiggsFieldSim",
-    "desc": "Simulazione/visualizzazione concetti fisici.",
-    "cat": "Lab",
-    "icon": "HG",
-    "url": "https://github.com/pezzaliapp/HiggsFieldSim",
-    "type": "repo"
-  },
-  {
-    "name": "Black Hole Lab",
-    "desc": "Esperimento visuale su buchi neri.",
-    "cat": "Lab",
-    "icon": "BH",
-    "url": "https://github.com/pezzaliapp/Black_Hole_Lab",
-    "type": "repo"
-  },
-  {
-    "name": "VisiCalc Tribute",
-    "desc": "Tributo storico/spreadsheet lab.",
-    "cat": "Lab",
-    "icon": "VC",
-    "url": "https://github.com/pezzaliapp/VisiCalc_Tribute",
-    "type": "repo"
-  }
-];
+    <a class="card" href="https://www.alessandropezzali.it/CheckappExcel/" target="_blank">
+      <div class="title">CheckappExcel</div>
+      <div class="desc">Controllo dati</div>
+    </a>
 
-    const categories = ["Tutte", "Core", "Business", "Officina", "AI", "Utility", "Creative", "Lab"];
-    let activeCategory = "Tutte";
+    <a class="card" href="https://www.alessandropezzali.it/TechAssist-AI-by-PezzaliApp/" target="_blank">
+      <div class="title">TechAssist AI</div>
+      <div class="desc">Supporto tecnico</div>
+    </a>
 
-    const grid = document.getElementById("appGrid");
-    const searchInput = document.getElementById("searchInput");
-    const tabs = document.getElementById("tabs");
-    const countLabel = document.getElementById("countLabel");
-    const emptyState = document.getElementById("emptyState");
-    const totalCount = document.getElementById("totalCount");
-    const liveCount = document.getElementById("liveCount");
+    <a class="card" href="https://www.alessandropezzali.it/triagefirst/" target="_blank">
+      <div class="title">TriageFirst</div>
+      <div class="desc">Triage informativo</div>
+    </a>
 
-    totalCount.textContent = apps.length;
-    liveCount.textContent = apps.filter(app => app.type === "live").length;
+    <a class="card" href="https://www.alessandropezzali.it/djapp/" target="_blank">
+      <div class="title">djApp</div>
+      <div class="desc">Console DJ</div>
+    </a>
 
-    categories.forEach(cat => {
-      const btn = document.createElement("button");
-      btn.className = "tab" + (cat === activeCategory ? " active" : "");
-      btn.textContent = cat;
-      btn.addEventListener("click", () => {
-        activeCategory = cat;
-        document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-        btn.classList.add("active");
-        render();
-      });
-      tabs.appendChild(btn);
-    });
+  </div>
+</div>
 
-    function render() {
-      const q = searchInput.value.toLowerCase().trim();
-
-      const filtered = apps.filter(app => {
-        const text = [app.name, app.desc, app.cat, app.type].join(" ").toLowerCase();
-        const matchesSearch = text.includes(q);
-        const matchesCategory = activeCategory === "Tutte" || app.cat === activeCategory;
-        return matchesSearch && matchesCategory;
-      });
-
-      grid.innerHTML = "";
-      countLabel.textContent = `${filtered.length} elementi`;
-
-      filtered.forEach((app, index) => {
-        const card = document.createElement("a");
-        card.className = "app-card";
-        card.href = app.url;
-        card.target = "_blank";
-        card.rel = "noopener";
-        card.style.animationDelay = `${index * 26}ms`;
-
-        const label = app.type === "live" ? "LIVE" : "REPO";
-
-        card.innerHTML = `
-          <div class="app-top">
-            <div class="icon">${app.icon}</div>
-            <div class="type">${label}</div>
-          </div>
-          <div class="app-body">
-            <h3>${app.name}</h3>
-            <p>${app.desc}</p>
-          </div>
-          <div class="open">${app.type === "live" ? "Apri app" : "Apri repo"} →</div>
-        `;
-
-        card.addEventListener("mousemove", (e) => {
-          const r = card.getBoundingClientRect();
-          card.style.setProperty("--mx", `${e.clientX - r.left}px`);
-          card.style.setProperty("--my", `${e.clientY - r.top}px`);
-        });
-
-        grid.appendChild(card);
-      });
-
-      emptyState.style.display = filtered.length ? "none" : "block";
-    }
-
-    searchInput.addEventListener("input", render);
-
-    const savedTheme = localStorage.getItem("pezzalihub-theme");
-    if (savedTheme === "dark") document.body.classList.add("dark");
-    if (savedTheme === "light") document.body.classList.add("light");
-
-    document.getElementById("themeBtn").addEventListener("click", () => {
-      const isDark = document.body.classList.toggle("dark");
-      document.body.classList.toggle("light", !isDark);
-      localStorage.setItem("pezzalihub-theme", isDark ? "dark" : "light");
-    });
-
-    let deferredPrompt;
-    const installBtn = document.getElementById("installBtn");
-
-    window.addEventListener("beforeinstallprompt", (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      installBtn.hidden = false;
-    });
-
-    installBtn.addEventListener("click", async () => {
-      if (!deferredPrompt) return;
-      deferredPrompt.prompt();
-      await deferredPrompt.userChoice;
-      deferredPrompt = null;
-      installBtn.hidden = true;
-    });
-
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("sw.js").catch(() => {});
-    }
-
-    render();
-  </script>
 </body>
 </html>
