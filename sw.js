@@ -1,4 +1,4 @@
-const CACHE_NAME = "pezzalihub-launcher-v1";
+const CACHE_NAME = "pezzalihub-v3-stabile";
 const APP_SHELL = [
   "/",
   "/index.html",
