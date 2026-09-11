@@ -1,0 +1,5 @@
+# pezzalihub.app — l'ecosistema di Alessandro Pezzali
+User-agent: *
+Allow: /
+
+Sitemap: https://pezzalihub.app/sitemap.xml
