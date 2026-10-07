@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>PezzaliHub — Il territorio in tempo reale</title>
-<meta name="description" content="Meteo, strada, sensori e dati in movimento. PezzaliHub raccoglie esperimenti indipendenti per osservare ciò che accade intorno a noi.">
+<meta name="description" content="Meteo, strada, cielo, sensori e dati in movimento. PezzaliHub raccoglie esperimenti indipendenti per osservare ciò che accade intorno a noi.">
 <meta name="theme-color" content="#08110f">
 <meta property="og:title" content="PezzaliHub — Il territorio in tempo reale">
-<meta property="og:description" content="Meteo, strada, sensori e dati in movimento. Esperimenti indipendenti per osservare ciò che accade intorno a noi.">
+<meta property="og:description" content="Meteo, strada, cielo, sensori e dati in movimento. Esperimenti indipendenti per osservare ciò che accade intorno a noi.">
 <meta property="og:url" content="https://pezzalihub.app/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PezzaliHub">
@@ -19,7 +19,7 @@
 <style>
 :root{
   --bg:#08110f;--panel:#0e1916;--panel2:#13201c;--ink:#f1f5f3;--muted:#9baca6;
-  --line:#23332e;--green:#39d98a;--amber:#f0a64a;--blue:#61aef7;--radius:22px;
+  --line:#23332e;--green:#39d98a;--amber:#f0a64a;--blue:#61aef7;--violet:#a99bff;--radius:22px;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -59,6 +59,9 @@ h2{font-size:clamp(32px,5vw,52px);line-height:1.04;letter-spacing:-.045em;margin
 .open{margin-top:24px;color:var(--green);font-weight:800;font-size:14px}
 .card.nowcast{border-color:rgba(240,166,74,.32)}.card.nowcast .status,.card.nowcast .open{color:var(--amber)}
 .card.road{border-color:rgba(97,174,247,.30)}.card.road .status,.card.road .open{color:var(--blue)}
+.card.sky{border-color:rgba(169,155,255,.34);grid-column:1/-1;min-height:auto}.card.sky .status,.card.sky .open{color:var(--violet)}
+.card.sky:after{width:320px;height:320px;right:-120px;top:-140px;background:radial-gradient(circle,rgba(169,155,255,.13),transparent 70%)}
+.card.sky h3{font-size:clamp(31px,4vw,40px)}.card.sky p{max-width:72ch}
 .philosophy{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#0a1412}
 .principles{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
 .principles strong{font-size:18px}.principles p{color:var(--muted);font-size:14px;margin:8px 0 0}
@@ -92,13 +95,13 @@ footer{border-top:1px solid var(--line);padding:34px 0 46px;color:var(--muted);f
  <div class="wrap">
    <div class="kicker">pezzalihub.app · live / territorio / sensori</div>
    <h1>Il territorio<br>in tempo reale.</h1>
-   <p class="lead">Meteo, strada, sensori e dati in movimento. Esperimenti indipendenti per osservare ciò che sta accadendo intorno a noi.</p>
+   <p class="lead">Meteo, strada, cielo, sensori e dati in movimento. Esperimenti indipendenti per osservare ciò che sta accadendo intorno a noi.</p>
    <div class="actions">
      <a class="btn primary" href="#live">Esplora i progetti</a>
      <a class="btn" href="https://www.pezzaliapp.com" target="_blank" rel="noopener">Vedi l'ecosistema PezzaliAPP ↗</a>
    </div>
    <div class="signal">
-     <div><strong>ATMOSFERA</strong><span>Radar, temporali, grandine, raffiche.</span></div>
+     <div><strong>ATMOSFERA</strong><span>Radar, temporali, aerei e satelliti in volo.</span></div>
      <div><strong>STRADA</strong><span>Sensori, anomalie e segnalazioni condivise.</span></div>
      <div><strong>TERRITORIO</strong><span>Terra, ambiente e dati osservabili.</span></div>
    </div>
@@ -109,10 +112,18 @@ footer{border-top:1px solid var(--line);padding:34px 0 46px;color:var(--muted);f
 <section id="live">
  <div class="wrap">
   <div class="section-head">
-    <div><div class="eyebrow">Dal territorio</div><h2>Quattro modi di osservare.</h2></div>
+    <div><div class="eyebrow">Dal territorio</div><h2>Cinque modi di osservare.</h2></div>
     <p class="section-copy">Non un catalogo di app. Qui restano i progetti che hanno un rapporto diretto con ambiente, mobilità, sensori e fenomeni in evoluzione.</p>
   </div>
   <div class="grid">
+   <article class="card sky">
+    <div class="status">Nuovo · live</div>
+    <h3>Finestrino</h3>
+    <p>Il cielo sopra di te, adesso. Mostra gli aerei, le navi e i satelliti che passano sopra il luogo scelto: ne scegli uno e guardi il mondo dal suo finestrino, in un globo 3D in diretta. Indica anche i prossimi passaggi visibili della Stazione Spaziale e permette di cercare un volo per numero. Tutto con dati aperti e gratuiti; non è uno strumento di navigazione.</p>
+    <div class="meta"><span class="tag">aerei</span><span class="tag">ADS-B</span><span class="tag">navi · AIS</span><span class="tag">satelliti</span><span class="tag">ISS</span><span class="tag">3D</span></div>
+    <a class="open" href="https://www.alessandropezzali.it/finestrino/" target="_blank" rel="noopener">Apri Finestrino →</a>
+   </article>
+
    <article class="card nowcast">
     <div class="status">Live · sperimentale</div>
     <h3>NOWCAST</h3>

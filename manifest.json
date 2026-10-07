@@ -1,13 +1,13 @@
 {
-  "name": "PezzaliHub — Ecosistema PezzaliAPP",
+  "name": "PezzaliHub — Il territorio in tempo reale",
   "short_name": "PezzaliHub",
-  "description": "77 app web per officine, vendite, AI, musica, scienza. Tutto nel browser.",
+  "description": "Meteo, strada, cielo, sensori e dati in movimento. Esperimenti indipendenti nel browser.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#000000",
-  "theme_color": "#000000",
+  "background_color": "#08110f",
+  "theme_color": "#08110f",
   "lang": "it",
   "categories": [
     "productivity",
