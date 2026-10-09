@@ -9,7 +9,8 @@ il punto dell'ecosistema [PezzaliAPP](https://www.pezzaliapp.com) dedicato ai da
 
 | Progetto | Ambito | Link |
 | --- | --- | --- |
-| **Finestrino** *(nuovo)* | Aerei, navi e satelliti sopra di te, visti dal finestrino in 3D | <https://www.alessandropezzali.it/finestrino/> |
+| **NEXUM** *(nuovo)* | Mappa d’indagine: eventi, luoghi e connessioni su una sola timeline | <https://nexum.pezzalihub.app> |
+| **Finestrino** | Aerei, navi e satelliti sopra di te, visti dal finestrino in 3D | <https://www.alessandropezzali.it/finestrino/> |
 | **NOWCAST** | Celle temporalesche, grandine e downburst dai mosaici radar | <https://nowcast.pezzalihub.app> |
 | **ROAD SENSE** | Anomalie stradali rilevate dai sensori dello smartphone | <https://roadsense.pezzalihub.app> |
 | **EarthRadar** | Vista della Terra e di ciò che si muove sopra di noi | <https://www.alessandropezzali.it/EarthRadar/> |
@@ -28,15 +29,15 @@ il punto dell'ecosistema [PezzaliAPP](https://www.pezzaliapp.com) dedicato ai da
 ## Aggiungere un progetto
 
 In `index.html`, dentro `<div class="grid">` della sezione `#live`, duplica un `<article class="card">`.
-Varianti di colore disponibili: `nowcast` (ambra), `road` (blu), `sky` (viola, a tutta larghezza), nessuna (verde).
-Ricordati di aggiornare il titolo della sezione («Cinque modi di osservare.»).
+Varianti di colore disponibili: `nowcast` (ambra), `road` (blu), `sky` (viola, a tutta larghezza), `nexum` (oro, a tutta larghezza), nessuna (verde).
+Ricordati di aggiornare il titolo della sezione («Sei modi di osservare.»).
 
 ## Cache busting
 
 A ogni aggiornamento incrementa la versione in `sw.js` e la data `lastmod` in `sitemap.xml`:
 
 ```js
-const CACHE_NAME = "pezzalihub-v5-finestrino";
+const CACHE_NAME = "pezzalihub-v6-nexum";
 ```
 
 ## Filosofia

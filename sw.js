@@ -1,4 +1,4 @@
-const CACHE_NAME = "pezzalihub-v5-finestrino";
+const CACHE_NAME = "pezzalihub-v6-nexum";
 const APP_SHELL = [
   "/",
   "/index.html",
