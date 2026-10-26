@@ -1,4 +1,4 @@
-const CACHE_NAME = "pezzalihub-v7-zipunzip";
+const CACHE_NAME = "pezzalihub-v8-atmosphera";
 const APP_SHELL = [
   "/",
   "/index.html",

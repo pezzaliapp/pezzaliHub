@@ -9,6 +9,7 @@ il punto dell'ecosistema [PezzaliAPP](https://www.pezzaliapp.com) dedicato ai da
 
 | Progetto | Ambito | Link |
 | --- | --- | --- |
+| **ATMOSPHERA** *(nuovo, 0.6.0-beta)* | Atmosfera da dati satellitari reali: l'uragano Milton in 3D | <https://atmosphera.pezzalihub.app> |
 | **NEXUM** *(nuovo)* | Mappa d’indagine: eventi, luoghi e connessioni su una sola timeline | <https://nexum.pezzalihub.app> |
 | **Finestrino** | Aerei, navi e satelliti sopra di te, visti dal finestrino in 3D | <https://www.alessandropezzali.it/finestrino/> |
 | **NOWCAST** | Celle temporalesche, grandine e downburst dai mosaici radar | <https://nowcast.pezzalihub.app> |
