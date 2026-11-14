@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Il Mio Primo Libro di Origami – Edizione 3D</title>
+<meta name="description" content="Le pieghe del libro «Il Mio Primo Libro di Origami» animate in 3D, un passo alla volta: cane, gatto, cuore, bicchiere, pinguino, cappello, cicala e balena.">
+<link rel="canonical" href="https://pezzalihub.app/origami/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pezzalihub.app/origami/">
+<meta property="og:title" content="Il Mio Primo Libro di Origami – Edizione 3D">
+<meta property="og:description" content="Ogni piega si anima in 3D, un passo alla volta. Prendi un foglio e piega insieme a noi!">
+<meta property="og:image" content="https://pezzalihub.app/origami/anteprima.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#3b2f25; --muted:#8a7b6c; --accent:#d9894b; --accent-dark:#b9692f; --line:#eadfcd; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:Nunito,system-ui,sans-serif;color:var(--ink);
+    background:radial-gradient(120% 80% at 50% 30%,#fffaf1 0%,#f3e9d8 70%,#ecdfc8 100%) fixed;
+    -webkit-tap-highlight-color:transparent;
+  }
+  a{color:var(--accent-dark)}
+  /* ---------- indice ---------- */
+  #index{max-width:860px;margin:0 auto;padding:26px 16px 40px}
+  .cover{text-align:center;margin-bottom:22px}
+  .cover .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .cover h1{font-family:Fredoka,sans-serif;font-weight:600;font-size:clamp(28px,7vw,44px);line-height:1.1;margin:6px 0}
+  .cover p{color:var(--muted);font-size:16px;max-width:520px;margin:0 auto}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
+  .tile{background:#fff;border-radius:20px;box-shadow:0 8px 24px rgba(90,60,30,.10);overflow:hidden;text-decoration:none;color:inherit;
+        display:flex;flex-direction:column;transition:transform .15s}
+  .tile:active,.tile:hover{transform:translateY(-3px)}
+  .tile .thumb{aspect-ratio:1/1;background:linear-gradient(#fffaf2,#f6ecdc);display:grid;place-items:center}
+  .tile .thumb img{width:100%;height:100%;object-fit:contain}
+  .tile .info{padding:10px 14px 14px}
+  .tile .num{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .tile .name{font-family:Fredoka,sans-serif;font-size:20px;font-weight:600}
+  .tile .meta{font-size:13px;color:var(--muted)}
+  .foot{margin-top:24px;text-align:center;color:var(--muted);font-size:13px}
+  /* ---------- modello ---------- */
+  #model{display:none;flex-direction:column;height:100dvh;overflow:hidden}
+  .top{display:flex;align-items:center;gap:10px;padding:12px 14px 2px}
+  .back{font-family:Fredoka,sans-serif;font-size:15px;border:0;background:#fff;border-radius:999px;padding:8px 14px;cursor:pointer;
+        box-shadow:0 2px 8px rgba(90,60,30,.12);color:var(--ink);text-decoration:none;white-space:nowrap}
+  .titles{flex:1;min-width:0;text-align:center;padding-right:60px}
+  .titles .kicker{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .titles h2{font-family:Fredoka,sans-serif;font-weight:600;font-size:clamp(22px,5.5vw,30px);line-height:1.15}
+  .titles .meta{font-size:12.5px;color:var(--muted)}
+  #stage{position:relative;flex:1;min-height:220px}
+  #stage canvas{display:block;width:100%;height:100%;touch-action:none}
+  .hint{position:absolute;right:12px;top:6px;font-size:12px;color:var(--muted);background:rgba(255,255,255,.75);
+        padding:5px 10px;border-radius:20px;pointer-events:none;transition:opacity .6s}
+  .card{margin:0 auto 12px;width:min(640px,calc(100% - 20px));background:#fff;border-radius:22px;
+        box-shadow:0 10px 30px rgba(90,60,30,.12);padding:14px 16px 12px}
+  .row{display:flex;align-items:center;gap:10px}
+  .badge{font-family:Fredoka,sans-serif;font-weight:600;background:var(--accent);color:#fff;border-radius:999px;
+         min-width:34px;height:34px;display:grid;place-items:center;font-size:17px;flex:none}
+  .steplabel{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+  .dots{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap;justify-content:flex-end}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--line);transition:background .3s,transform .3s;cursor:pointer;border:0}
+  .dot.on{background:var(--accent);transform:scale(1.25)}
+  .dot.done{background:#e9b98f}
+  #text{font-size:clamp(16px,4.2vw,19px);line-height:1.45;margin:9px 0 12px;min-height:4.3em}
+  .controls{display:flex;gap:8px}
+  button.btn{font-family:Fredoka,sans-serif;font-size:16px;font-weight:500;border:0;border-radius:14px;cursor:pointer;
+    padding:12px 14px;background:#f4ece0;color:var(--ink);transition:transform .1s,background .2s}
+  button.btn:active{transform:scale(.96)}
+  button.btn:disabled{opacity:.35;cursor:default}
+  button.primary{flex:1;background:var(--accent);color:#fff}
+  button.primary:hover{background:var(--accent-dark)}
+  .extra{font-size:14px;line-height:1.45;color:#5d4f42;background:#fbf4e8;border-radius:14px;padding:10px 12px;margin-top:10px;display:none}
+  .extra b{color:var(--accent-dark)}
+  .tip{font-size:13px;color:var(--muted);margin-top:9px;text-align:center}
+</style>
+</head>
+<body>
+
+<section id="index">
+  <div class="cover">
+    <div class="kicker">Edizione 3D</div>
+    <h1>Il Mio Primo<br>Libro di Origami</h1>
+    <p>Scegli un modello: ogni piega si anima in 3D, un passo alla volta. Puoi ruotare il foglio con il dito per guardarlo da ogni lato.</p>
+  </div>
+  <div class="grid" id="grid"></div>
+  <div class="foot">Prendi un foglio quadrato e piega insieme all'animazione.<br>I numeri dei modelli sono gli stessi del libro.</div>
+</section>
+
+<section id="model">
+  <div class="top">
+    <a class="back" href="#indice">◀ Indice</a>
+    <div class="titles">
+      <div class="kicker" id="mKicker"></div>
+      <h2 id="mTitle"></h2>
+      <div class="meta" id="mMeta"></div>
+    </div>
+  </div>
+  <div id="stage"><div class="hint" id="hint">Trascina per ruotare · pizzica per zoom</div></div>
+  <div class="card">
+    <div class="row">
+      <div class="badge" id="badge">0</div>
+      <div class="steplabel" id="steplabel"></div>
+      <div class="dots" id="dots"></div>
+    </div>
+    <p id="text"></p>
+    <div class="controls">
+      <button class="btn" id="prev" aria-label="Passo precedente">◀</button>
+      <button class="btn" id="replay">↻ Rivedi</button>
+      <button class="btn primary" id="next">Avanti ▶</button>
+    </div>
+    <div class="extra" id="extra"></div>
+    <div class="tip">Tocca <b>Avanti</b> per ogni piega, oppure <a href="#" id="playall">guarda tutto di fila</a>.</div>
+  </div>
+</section>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+/* =====================================================================
+   MOTORE DI PIEGATURA
+   Il foglio è un insieme di facce piane convesse, ognuna a una quota z.
+   Una piega taglia le facce lungo una retta e ruota di 180° quelle scelte
+   attorno alla retta, a una quota che decide se finiscono sopra (valle),
+   sotto (monte) o in mezzo agli strati (piega infilata in una tasca).
+   ===================================================================== */
+const R = Math.SQRT2, GAP = 0.007, EPS = 1e-6;
+const V = (x, y, z = 0) => new THREE.Vector3(x, y, z);
+const sideOf = (p, A, d) => d.x * (p.y - A.y) - d.y * (p.x - A.x);
+const centroid = pts => pts.reduce((c, p) => c.add(p), V(0, 0, 0)).multiplyScalar(1 / pts.length);
+function area(pts){ let a = 0; for (let i = 0; i < pts.length; i++){ const p = pts[i], q = pts[(i+1)%pts.length]; a += p.x*q.y - q.x*p.y; } return Math.abs(a) / 2; }
+const fz = f => f.v[0].z;
+
+function contains(f, x, y){
+  let pos = false, neg = false; const n = f.v.length;
+  for (let i = 0; i < n; i++){
+    const a = f.v[i], b = f.v[(i+1)%n];
+    const c = (b.x - a.x) * (y - a.y) - (b.y - a.y) * (x - a.x);
+    if (c > 1e-9) pos = true; else if (c < -1e-9) neg = true;
+    if (pos && neg) return false;
+  }
+  return true;
+}
+const stackAt = (facets, x, y) => facets.filter(f => contains(f, x, y)).sort((a, b) => fz(b) - fz(a));
+
+function splitPoly(pts, A, d){
+  const pos = [], neg = [];
+  for (let i = 0; i < pts.length; i++){
+    const a = pts[i], b = pts[(i+1) % pts.length];
+    const sa = sideOf(a, A, d), sb = sideOf(b, A, d);
+    if (sa >= -EPS) pos.push(a.clone());
+    if (sa <=  EPS) neg.push(a.clone());
+    if ((sa > EPS && sb < -EPS) || (sa < -EPS && sb > EPS)){
+      const p = a.clone().lerp(b, sa / (sa - sb)); pos.push(p); neg.push(p.clone());
+    }
+  }
+  return [pos, neg].filter(p => p.length >= 3 && area(p) > 1e-6);
+}
+function reflectXY(p, A, d){
+  const v = V(p.x - A.x, p.y - A.y, 0), t = v.dot(d);
+  return V(A.x + 2*t*d.x - v.x, A.y + 2*t*d.y - v.y, 0);
+}
+function chooseFacets(facets, sel){
+  if (!sel) return new Set(facets);
+  if (sel.only){ return new Set(stackAt(facets, ...sel.only).slice(0, sel.k || 1)); }
+  if (sel.topAt){ const st = stackAt(facets, ...sel.topAt); const zt = fz(st[Math.min(sel.k, st.length) - 1]) - 1e-9; return new Set(facets.filter(f => fz(f) >= zt)); }
+  if (sel.fn) return new Set(facets.filter(f => sel.fn(f, facets)));
+  return new Set(facets);
+}
+
+function planFold(input, f){
+  const facets = input.map(x => ({ v: x.v.map(p => p.clone()) }));
+  const all = !!f.all;
+  const A = V(f.A[0], f.A[1]), d = V(f.B[0]-f.A[0], f.B[1]-f.A[1]).normalize();
+  const ref = V(...(f.ref || [f.A[0] - d.y, f.A[1] + d.x]));
+  const sref = Math.sign(sideOf(ref, A, d));
+  const chosen = chooseFacets(facets, f.sel);
+  let parts = [];
+  for (const fc of facets){
+    if (all){ parts.push({ v: fc.v, moving: true }); continue; }
+    if (!chosen.has(fc)){ parts.push({ v: fc.v, moving: false }); continue; }
+    for (const poly of splitPoly(fc.v, A, d))
+      parts.push({ v: poly, moving: Math.sign(sideOf(centroid(poly), A, d)) === sref });
+  }
+  if (f.crease) parts.forEach(p => p.moving = p.moving);   // le facce si muovono e poi tornano
+  const zs = parts.map(fz), mov = parts.filter(p => p.moving);
+  if (!mov.length) console.warn('piega senza effetto', f);
+  const zmaxm = Math.max(...mov.map(fz)), zminm = Math.min(...mov.map(fz));
+  let mode = f.mode || 'valley', h;
+  if (all) h = (Math.min(...zs) + Math.max(...zs)) / 2;
+  else if (mode === 'valley' || f.crease) h = Math.max(...zs) + GAP / 2;
+  else if (mode === 'mountain') h = Math.min(...zs) - GAP / 2;
+  else if (mode === 'inside'){
+    // la punta va infilata subito sopra lo strato n. "idx" (0 = il più alto) nel punto "at"
+    const st = stackAt(parts.filter(p => !p.moving), ...f.at);
+    const zt = fz(st[Math.min(f.idx ?? 1, st.length - 1)]);
+    const lift = (zmaxm - zminm) + 2 * GAP;
+    parts.forEach(p => { if (!p.moving && fz(p) > zt + 1e-9) p.v.forEach(q => q.z += lift); });
+    h = (zt + GAP + zmaxm) / 2;
+  }
+  const P = V(A.x, A.y, h);
+  const vr = ref.clone().setZ(0).sub(P);
+  const cz = d.x * vr.y - d.y * vr.x;
+  let sign = cz >= 0 ? 1 : -1;
+  if (mode === 'mountain' && !all) sign = -sign;
+  if (all) sign = 1;
+  const done = parts.map(p => ({
+    v: (p.moving && !f.crease) ? p.v.map(q => { const r = reflectXY(q, A, d); r.z = 2*h - q.z; return r; }) : p.v.map(q => q.clone())
+  }));
+  return { parts, A, d, P, sign, done, ref, target: reflectXY(ref, A, d), mode, all, crease: !!f.crease, guide: f.guide !== false };
+}
+
+/* =====================================================================
+   I MODELLI (stessi numeri e stesse istruzioni del libro)
+   ===================================================================== */
+const diamond = () => [{ v: [V(0,R), V(-R,0), V(0,-R), V(R,0)] }];
+const rect = (w, h) => [{ v: [V(-w/2,-h/2), V(w/2,-h/2), V(w/2,h/2), V(-w/2,h/2)] }];
+const bis = (p, t) => { const m = [(p[0]+t[0])/2, (p[1]+t[1])/2], dx = t[0]-p[0], dy = t[1]-p[1]; return { A: m, B: [m[0]-dy, m[1]+dx] }; };
+const hline = y => ({ A:[-1, y], B:[1, y] });
+const vline = x => ({ A:[x, -1], B:[x, 1] });
+const TURN = { A:[0,-1], B:[0,1], all:true };
+const dot = (x, y, r, c = 0x241a14) => ({ t:'dot', p:[x, y], r, c });
+const eye = (x, y, r = .065) => [dot(x, y, r), dot(x + r*.3, y + r*.3, r*.32, 0xffffff)];
+const stroke = (pts, w = .018, c = 0x241a14) => ({ t:'line', pts, w, c });
+
+function earFold(sx){
+  const P0 = [sx*R, 0], T = [sx*0.95, -0.85];
+  return { ...bis(P0, T), ref: P0 };
+}
+
+const MODELS = [
+ { id:'cane', n:1, title:'Il muso del cane', level:1, time:'5 minuti', paper: 0xd9894b,
+   sapevi:"Questo cagnolino si piega da generazioni nelle scuole del Giappone: è spesso il primissimo origami che si impara.",
+   consiglio:"Prova a cambiare l'angolo delle orecchie: più sono inclinate, più il cane sembra un cucciolo.",
+   start: diamond, steps: [
+   { text:"Metti il foglio quadrato a rombo, con il <b>lato bianco verso l'alto</b>." },
+   { text:"Piega l'angolo in alto fino all'angolo in basso: ora hai un triangolo.", folds:[{ ...hline(0), ref:[0,R] }] },
+   { text:"Piega l'angolo sinistro verso il basso: è il primo orecchio.", folds:[earFold(-1)] },
+   { text:"Fai lo stesso con l'angolo destro: ecco il secondo orecchio.", folds:[earFold(1)] },
+   { text:"Piega verso l'alto la punta in basso, solo un po': sarà il muso.", folds:[{ ...hline(-1.02), ref:[0,-R] }] },
+   { text:"Disegna occhi e naso con un pennarello. <b>Il tuo cane è pronto!</b>",
+     face:[...eye(-0.27,-0.36), ...eye(0.27,-0.36), { ...dot(0,-0.8,.085), sx:1.35 }, dot(-0.03,-0.775,.022,0xffffff)] } ] },
+
+ { id:'gatto', n:2, title:'Il gatto', level:1, time:'5 minuti', paper: 0x8f98a3,
+   sapevi:"Con lo stesso foglio e quasi le stesse pieghe puoi fare cane, gatto e volpe: cambia solo la direzione delle orecchie.",
+   consiglio:"Usa carta arancione o grigia e disegna le strisce del pelo: avrai un gatto tigrato.",
+   start: diamond, steps: [
+   { text:"Metti il foglio a rombo, con il <b>lato bianco verso l'alto</b>." },
+   { text:"Piega l'angolo in alto fino all'angolo in basso.", folds:[{ ...hline(0), ref:[0,R] }] },
+   { text:"Porta gli angoli sinistro e destro giù, fino alla punta in basso.",
+     folds:[{ A:[0,0], B:[-1,-1], ref:[-R,0] }, { A:[0,0], B:[1,-1], ref:[R,0] }] },
+   { text:"Ripiega le due punte verso l'alto e verso l'esterno, così sporgono dal bordo superiore: sono le orecchie.",
+     folds:[{ ...bis([0,-R],[-0.62,0.42]), ref:[0,-R], sel:{ only:[-0.12,-1.15], k:2 } },
+            { ...bis([0,-R],[0.62,0.42]),  ref:[0,-R], sel:{ only:[0.12,-1.15],  k:2 } }] },
+   { text:"Piega <b>dietro</b> la punta in basso: il muso diventa piatto.", folds:[{ ...hline(-0.95), ref:[0,-R], mode:'mountain' }] },
+   { text:"Disegna occhi, naso e baffi. <b>Ecco il gatto!</b>",
+     face:[...eye(-0.3,-0.4,.06), ...eye(0.3,-0.4,.06), dot(0,-0.62,.055,0xe58c9a),
+           stroke([[-0.12,-0.66],[-0.55,-0.6]]), stroke([[-0.12,-0.7],[-0.55,-0.76]]),
+           stroke([[0.12,-0.66],[0.55,-0.6]]), stroke([[0.12,-0.7],[0.55,-0.76]])] } ] },
+
+ { id:'cuore', n:3, title:'Il cuore', level:1, time:'10 minuti', paper: 0xd94a4a,
+   sapevi:"Il cuore è uno dei modelli più piegati al mondo nel mese di febbraio, per San Valentino.",
+   consiglio:"Scrivi un messaggio segreto all'interno del foglio prima di piegarlo: lo scoprirà chi lo apre.",
+   start: diamond, steps: [
+   { text:"Metti il foglio a rombo, con il <b>lato bianco verso l'alto</b>." },
+   { text:"Piega a metà lungo le due diagonali e riapri ogni volta: restano due segni a croce.",
+     folds:[{ ...hline(0), ref:[0,R], crease:true }, { ...vline(0), ref:[-R,0], crease:true }] },
+   { text:"Piega l'angolo in alto fino al centro.", folds:[{ ...hline(R/2), ref:[0,R] }] },
+   { text:"Piega l'angolo in basso fino al bordo superiore.", folds:[{ ...hline(-R/4), ref:[0,-R] }] },
+   { text:"Piega i bordi in basso a destra e a sinistra verso l'alto, allineandoli alla linea centrale.",
+     folds:[{ A:[0,-R/4], B:[1,-R/4+1], ref:[0.8,-R/4+0.02] }, { A:[0,-R/4], B:[-1,-R/4+1], ref:[-0.8,-R/4+0.02] }] },
+   { text:"Piega <b>dietro</b> le due punte in alto e le due punte ai lati, per arrotondare la forma.",
+     folds:[{ ...hline(0.921), ref:[0.354,1.061], mode:'mountain' },
+            { ...vline(-0.744), ref:[-0.884,0.53], mode:'mountain' }, { ...vline(0.744), ref:[0.884,0.53], mode:'mountain' }] },
+   { text:"<b>Ecco il cuore!</b> È perfetto da attaccare su un biglietto di auguri." } ] },
+
+ { id:'bicchiere', n:5, title:'Il bicchiere', level:1, time:'5 minuti', paper: 0x4f93cf,
+   sapevi:"Con un foglio di carta da forno e le stesse pieghe si ottiene un piccolo contenitore da usare in cucina.",
+   consiglio:"Nel passo 2 guarda bene il bordo superiore della parte piegata: deve essere perfettamente orizzontale.",
+   start: diamond, steps: [
+   { text:"Metti il foglio a rombo, con il <b>lato bianco verso l'alto</b>." },
+   { text:"Piega l'angolo in basso fino all'angolo in alto: ora hai un triangolo.", folds:[{ ...hline(0), ref:[0,-R] }] },
+   { text:"Piega l'angolo destro fino al bordo sinistro: il bordo superiore della parte piegata deve restare orizzontale.",
+     folds:[{ A:[0.1716*R,0], B:[0.1716*R+Math.cos(1.1781), Math.sin(1.1781)], ref:[R,0] }] },
+   { text:"Fai lo stesso con l'angolo sinistro, portandolo sul bordo destro.",
+     folds:[{ A:[-0.1716*R,0], B:[-0.1716*R-Math.cos(1.1781), Math.sin(1.1781)], ref:[-R,0] }] },
+   { text:"Piega verso il basso solo lo strato davanti della punta in alto e <b>infilalo nella tasca</b> del triangolo davanti.",
+     folds:[{ ...hline(0.8284), ref:[0,R], sel:{ only:[0,1.25], k:1 }, mode:'inside', at:[-0.3,0.45], idx:1 }] },
+   { text:"Piega <b>all'indietro</b> la punta che resta.", folds:[{ ...hline(0.8284), ref:[0,R], mode:'mountain' }] },
+   { text:"Premi leggermente i lati per aprire il bicchiere. <b>Fatto!</b> Usalo per piccoli oggetti (non per bere!)." } ] },
+
+ { id:'pinguino', n:6, title:'Il pinguino', level:1, time:'10 minuti', paper: 0x2c3440,
+   sapevi:"Quasi tutti i pinguini vivono nell'emisfero sud, e nessuno di loro sa volare: in compenso sono nuotatori bravissimi.",
+   consiglio:"Se la striscia bianca ti sembra troppo stretta o larga, riapri il passo 2 e sposta un po' le pieghe.",
+   start: diamond, steps: (() => {
+     const B = new THREE.Vector2(0,-R), C = new THREE.Vector2(-R,0), T = new THREE.Vector2(-0.2, -R + Math.sqrt(4 - 0.04));
+     const dL = C.clone().sub(B).normalize().add(T.clone().sub(B).normalize());
+     const yb = 1 - R;
+     return [
+     { text:"Metti il foglio a rombo, con il <b>lato bianco verso l'alto</b>." },
+     { text:"Piega a metà da sinistra a destra e riapri.", folds:[{ ...vline(0), ref:[-R,0], crease:true }] },
+     { text:"Piega i lati verso il centro partendo dalla punta in basso, ma lascia una <b>striscia bianca</b> nel mezzo: sarà la pancia.",
+       folds:[{ A:[0,-R], B:[dL.x, -R + dL.y], ref:[-R,0] }, { A:[0,-R], B:[-dL.x, -R + dL.y], ref:[R,0] }] },
+     { text:"Piega la punta in alto verso il basso: è la testa.", folds:[{ ...hline(0.5), ref:[0,R] }] },
+     { text:"Ripiega in su la punta, solo un pochino: è il becco.",
+       folds:[{ ...hline(yb + 0.22), ref:[0,yb], sel:{ only:[0, yb + 0.05], k:1 } }] },
+     { text:"Piega <b>all'indietro</b> la punta in basso, così il pinguino sta in piedi.", folds:[{ ...hline(-1.05), ref:[0,-R], mode:'mountain' }] },
+     { text:"Disegna gli occhi. <b>Ecco il pinguino!</b>",
+       face:[dot(-0.16,0.3,.07,0xffffff), dot(0.16,0.3,.07,0xffffff), dot(-0.15,0.29,.036), dot(0.15,0.29,.036)] } ];
+   })() },
+
+ { id:'cappello', n:7, title:'Il cappello di carta', level:1, time:'10 minuti', paper: 0xe8b84a, ratio:true,
+   sapevi:"Gli imbianchini lo usavano davvero, fatto con la carta di giornale, per ripararsi dagli schizzi di vernice.",
+   consiglio:"Con un A4 diventa un cappellino da festa; con un foglio di giornale intero è della misura giusta per un adulto.",
+   start: () => rect(2, 2.828), steps: [
+   { text:"Prendi un foglio A4 (o di giornale) in verticale, con il <b>lato bianco verso l'alto</b>." },
+   { text:"Piegalo a metà portando il bordo in alto su quello in basso.", folds:[{ ...hline(0), ref:[0,1.414] }] },
+   { text:"Piega a metà da sinistra a destra e riapri: serve solo a segnare il centro.", folds:[{ ...vline(0), ref:[-1,-0.7], crease:true }] },
+   { text:"Porta i due angoli in alto sulla linea centrale.",
+     folds:[{ A:[0,0], B:[-1,-1], ref:[-1,0] }, { A:[0,0], B:[1,-1], ref:[1,0] }] },
+   { text:"Piega verso l'alto la striscia in basso, <b>solo lo strato davanti</b>.",
+     folds:[{ ...hline(-1), ref:[0,-1.414], sel:{ topAt:[0,-1.2], k:1 } }] },
+   { text:"Gira il foglio.", folds:[TURN] },
+   { text:"Piega verso l'alto anche l'altra striscia.", folds:[{ ...hline(-1), ref:[0,-1.414], sel:{ topAt:[0,-1.2], k:1 } }] },
+   { text:"Apri il cappello dal basso e mettilo in testa! <b>Fatto!</b>" } ] },
+
+ { id:'cicala', n:12, title:'La cicala', level:1, time:'10 minuti', paper: 0x5f9a48,
+   sapevi:"In Giappone il frinire delle cicale è considerato il suono dell'estate, proprio come succede in tante zone d'Italia.",
+   consiglio:"Nei passi 4 e 5 lascia un piccolo spazio tra le due strisce: si vedrà meglio la testa.",
+   start: diamond, steps: [
+   { text:"Metti il foglio a rombo, con il <b>lato bianco verso l'alto</b>." },
+   { text:"Piega l'angolo in basso fino all'angolo in alto.", folds:[{ ...hline(0), ref:[0,-R] }] },
+   { text:"Porta gli angoli sinistro e destro sulla punta in alto.",
+     folds:[{ A:[0,0], B:[-1,1], ref:[-R,0] }, { A:[0,0], B:[1,1], ref:[R,0] }] },
+   { text:"Ripiega le due punte verso il basso, un po' aperte verso l'esterno: sono le ali.",
+     folds:[{ ...bis([0,R],[-0.42,-0.22]), ref:[0,R], sel:{ only:[-0.1,1.05], k:2 } },
+            { ...bis([0,R],[0.42,-0.22]),  ref:[0,R], sel:{ only:[0.1,1.05],  k:2 } }] },
+   { text:"Piega verso il basso il primo strato della punta in alto.", folds:[{ ...hline(0.93), ref:[0,R], sel:{ only:[0,1.3], k:1 } }] },
+   { text:"Piega verso il basso anche il secondo strato, un po' più in alto del primo.", folds:[{ ...hline(1.13), ref:[0,R], sel:{ only:[0,1.3], k:1 } }] },
+   { text:"Piega <b>dietro</b> i due lati.",
+     folds:[{ ...vline(-0.5), ref:[-0.7,0.5], mode:'mountain' }, { ...vline(0.5), ref:[0.7,0.5], mode:'mountain' }] },
+   { text:"<b>Ecco la cicala!</b> Con questo modello in Giappone si festeggia l'estate.", face:[...eye(-0.2,1.0,.05), ...eye(0.2,1.0,.05)] } ] },
+
+ { id:'balena', n:13, title:'La balena', level:1, time:'10 minuti', paper: 0x3f78b0,
+   sapevi:"La balenottera azzurra è l'animale più grande mai esistito: è più lunga di due autobus messi in fila.",
+   consiglio:"Puoi far uscire uno spruzzo d'acqua incollando sulla testa una striscia di carta bianca arricciata.",
+   start: diamond, steps: [
+   { text:"Metti il foglio a rombo, con il <b>lato bianco verso l'alto</b>." },
+   { text:"Piega a metà dall'alto in basso e riapri.", folds:[{ ...hline(0), ref:[0,R], crease:true }] },
+   { text:"Porta i bordi a sinistra sulla linea centrale: ottieni la forma ad aquilone.",
+     folds:[{ A:[-R,0], B:[-R+0.9239,0.3827], ref:[0,R] }, { A:[-R,0], B:[-R+0.9239,-0.3827], ref:[0,-R] }] },
+   { text:"Piega l'angolo a destra verso sinistra.", folds:[{ ...vline(0.62), ref:[R,0] }] },
+   { text:"Piega a metà portando la parte in basso <b>dietro</b>.", folds:[{ ...hline(0), ref:[0,-0.3], mode:'mountain' }] },
+   { text:"Piega la coda verso l'alto.", folds:[{ ...bis([-R,0],[-1.0,0.62]), ref:[-R,0] }] },
+   { text:"Disegna l'occhio. <b>La balena è pronta a tuffarsi!</b>", face:[...eye(0.25,0.12,.05)] } ] },
+];
+
+// Due facce si sovrappongono davvero? (separazione degli assi, con tolleranza per i bordi in comune)
+function overlaps(a, b){
+  for (const poly of [a.v, b.v]){
+    for (let i = 0; i < poly.length; i++){
+      const p = poly[i], q = poly[(i+1)%poly.length], nx = q.y - p.y, ny = p.x - q.x;
+      let a0 = Infinity, a1 = -Infinity, b0 = Infinity, b1 = -Infinity;
+      for (const v of a.v){ const s = v.x*nx + v.y*ny; a0 = Math.min(a0, s); a1 = Math.max(a1, s); }
+      for (const v of b.v){ const s = v.x*nx + v.y*ny; b0 = Math.min(b0, s); b1 = Math.max(b1, s); }
+      const L = Math.hypot(nx, ny) || 1;
+      if (Math.min(a1, b1) - Math.max(a0, b0) < 1e-4 * L) return false;
+    }
+  }
+  return true;
+}
+// Ricompatta le quote: ogni faccia sta un solo strato sopra quelle che copre (l'ordine resta lo stesso)
+function compact(facets){
+  const order = [...facets].sort((a, b) => fz(a) - fz(b));
+  const placed = [];
+  for (const f of order){
+    let lvl = 0;
+    for (const g of placed) if (overlaps(f, g)) lvl = Math.max(lvl, g.lvl + 1);
+    f.lvl = lvl; placed.push(f);
+  }
+  for (const f of facets){ f.v.forEach(p => p.z = f.lvl * GAP); delete f.lvl; }
+  return facets;
+}
+
+for (const m of MODELS){
+  m.states = [m.start()]; m.plans = [[]];
+  for (let i = 1; i < m.steps.length; i++){
+    let cur = m.states[i-1]; const plans = [];
+    for (const f of (m.steps[i].folds || [])){ const p = planFold(cur, f); p.done = compact(p.done); plans.push(p); cur = p.done; }
+    m.plans.push(plans); m.states.push(cur);
+  }
+  // inquadratura: rettangolo che contiene tutti i passi
+  let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+  for (const s of m.states) for (const f of s) for (const p of f.v){ x0 = Math.min(x0,p.x); x1 = Math.max(x1,p.x); y0 = Math.min(y0,p.y); y1 = Math.max(y1,p.y); }
+  m.box = { cx:(x0+x1)/2, cy:(y0+y1)/2, w:x1-x0, h:y1-y0 };
+}
+
+/* =====================================================================
+   SCENA 3D
+   ===================================================================== */
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(38, 1, 0.05, 60);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true; controls.enablePan = false; controls.minDistance = 2;
+controls.addEventListener('start', () => { document.getElementById('hint').style.opacity = 0; });
+
+scene.add(new THREE.HemisphereLight(0xffffff, 0xd8c6aa, 1.6));
+const sun = new THREE.DirectionalLight(0xffffff, 1.7);
+sun.position.set(-1.6, -1.2, 4.5); sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+Object.assign(sun.shadow.camera, { left:-3, right:3, top:3, bottom:-3, near:0.5, far:14 });
+sun.shadow.radius = 4; sun.shadow.bias = -0.0005;
+scene.add(sun, sun.target);
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(16, 16), new THREE.ShadowMaterial({ opacity: 0.15 }));
+ground.position.z = -0.08; ground.receiveShadow = true; scene.add(ground);
+
+const offset = { polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1 };
+const matFront = new THREE.MeshStandardMaterial({ color: 0xfffdf8, roughness: .92, side: THREE.FrontSide, ...offset });
+const matBack  = new THREE.MeshStandardMaterial({ color: 0xd9894b, roughness: .85, side: THREE.BackSide, ...offset });
+const paperFront = new THREE.Mesh(new THREE.BufferGeometry(), matFront);
+const paperBack  = new THREE.Mesh(new THREE.BufferGeometry(), matBack);
+paperFront.castShadow = paperBack.castShadow = true;
+const edges = new THREE.LineSegments(new THREE.BufferGeometry(), new THREE.LineBasicMaterial({ color: 0x5a4030, transparent: true, opacity: .32 }));
+scene.add(paperFront, paperBack, edges);
+
+const VALLEY = 0x2f6fb5, MOUNTAIN = 0xd2552d;
+const foldLine = new THREE.Line(new THREE.BufferGeometry(), new THREE.LineDashedMaterial({ color: VALLEY, dashSize: .07, gapSize: .05, transparent: true }));
+const arrowMat = new THREE.MeshBasicMaterial({ color: VALLEY, transparent: true });
+const arrowTube = new THREE.Mesh(new THREE.BufferGeometry(), arrowMat);
+const arrowHead = new THREE.Mesh(new THREE.ConeGeometry(.055, .14, 16), arrowMat);
+scene.add(foldLine, arrowTube, arrowHead);
+
+const face = new THREE.Group(); scene.add(face);
+const faceMats = [];
+
+/* ----------------------------- disegno ----------------------------- */
+const ease = t => t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+
+function setPaper(polys){
+  const tri = [], seg = [];
+  for (const pts of polys){
+    for (let i = 1; i < pts.length - 1; i++) tri.push(...pts[0].toArray(), ...pts[i].toArray(), ...pts[i+1].toArray());
+    for (let i = 0; i < pts.length; i++) seg.push(...pts[i].toArray(), ...pts[(i+1)%pts.length].toArray());
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(tri, 3)); g.computeVertexNormals();
+  paperFront.geometry.dispose(); paperFront.geometry = g; paperBack.geometry = g;
+  const ge = new THREE.BufferGeometry(); ge.setAttribute('position', new THREE.Float32BufferAttribute(seg, 3));
+  edges.geometry.dispose(); edges.geometry = ge;
+}
+
+function posePlan(plan, t){
+  const k = plan.crease ? Math.sin(Math.PI * t) * 0.985 : ease(t);
+  const q = new THREE.Quaternion().setFromAxisAngle(plan.d.clone().setZ(0).normalize().applyAxisAngle(V(0,0,1), 0), plan.sign * Math.PI * k);
+  return plan.parts.map(p => p.moving ? p.v.map(v => v.clone().sub(plan.P).applyQuaternion(q).add(plan.P)) : p.v);
+}
+
+function lineExtent(facets, A, d){
+  let lo = Infinity, hi = -Infinity;
+  for (const f of facets){
+    const pts = f.v;
+    for (let i = 0; i < pts.length; i++){
+      const a = pts[i], b = pts[(i+1)%pts.length], sa = sideOf(a, A, d), sb = sideOf(b, A, d);
+      if ((sa <= EPS && sb >= -EPS) || (sa >= -EPS && sb <= EPS)){
+        const p = Math.abs(sa - sb) < 1e-9 ? a : a.clone().lerp(b, sa/(sa-sb));
+        const t = (p.x - A.x)*d.x + (p.y - A.y)*d.y; lo = Math.min(lo, t); hi = Math.max(hi, t);
+      }
+    }
+  }
+  return [lo - .12, hi + .12];
+}
+
+function showGuide(plan, alpha){
+  const vis = !!plan && plan.guide && !plan.all && alpha > 0.01;
+  foldLine.visible = arrowTube.visible = arrowHead.visible = vis;
+  if (!vis) return;
+  const col = plan.mode === 'mountain' ? MOUNTAIN : VALLEY;
+  foldLine.material.color.setHex(col); arrowMat.color.setHex(col);
+  foldLine.material.dashSize = plan.mode === 'mountain' ? .12 : .07;
+  const top = Math.max(...plan.parts.map(fz)) + .015;
+  const movers = plan.parts.filter(p => p.moving);
+  let [lo, hi] = lineExtent(movers, plan.A, plan.d);
+  if (!isFinite(lo)) [lo, hi] = lineExtent(plan.parts, plan.A, plan.d);
+  const a = plan.A.clone().addScaledVector(plan.d, lo).setZ(top), b = plan.A.clone().addScaledVector(plan.d, hi).setZ(top);
+  foldLine.geometry.dispose(); foldLine.geometry = new THREE.BufferGeometry().setFromPoints([a, b]);
+  foldLine.computeLineDistances(); foldLine.material.opacity = alpha;
+  const s = plan.ref.clone().setZ(top), e = plan.target.clone().setZ(top);
+  const dir = e.clone().sub(s), len = dir.length();
+  if (len < .05){ arrowTube.visible = arrowHead.visible = false; return; }
+  const s2 = s.clone().addScaledVector(dir, Math.min(.12, len*.15) / len), e2 = e.clone().addScaledVector(dir, -Math.min(.1, len*.12) / len);
+  const mid = s2.clone().add(e2).multiplyScalar(.5); mid.z += Math.max(.3, len * .35);
+  const curve = new THREE.QuadraticBezierCurve3(s2, mid, e2);
+  arrowTube.geometry.dispose(); arrowTube.geometry = new THREE.TubeGeometry(curve, 40, .014, 8, false);
+  arrowHead.position.copy(curve.getPoint(1));
+  arrowHead.quaternion.setFromUnitVectors(V(0,1,0), curve.getTangent(1).normalize());
+  arrowMat.opacity = alpha * .9;
+  if (plan.crease){ // doppia freccia: si piega e si riapre
+    arrowHead.visible = true;
+  }
+}
+
+function buildFace(model, stepIdx){
+  face.clear(); faceMats.length = 0;
+  const items = model.steps[stepIdx].face; if (!items) return;
+  const facets = model.states[stepIdx];
+  const zAt = (x, y) => { const st = stackAt(facets, x, y); return (st.length ? fz(st[0]) : 0) + .004; };
+  let k = 0;
+  for (const it of items){
+    const mat = new THREE.MeshBasicMaterial({ color: it.c, transparent: true }); faceMats.push(mat);
+    if (it.t === 'dot'){
+      const m = new THREE.Mesh(new THREE.CircleGeometry(it.r, 40), mat);
+      m.position.set(it.p[0], it.p[1], zAt(...it.p) + k * 1e-4); m.userData.sx = it.sx || 1; face.add(m);
+    } else if (it.t === 'line'){
+      for (let i = 0; i < it.pts.length - 1; i++){
+        const a = V(...it.pts[i]), b = V(...it.pts[i+1]), L = a.distanceTo(b);
+        const m = new THREE.Mesh(new THREE.PlaneGeometry(L, it.w), mat);
+        const c = a.clone().add(b).multiplyScalar(.5);
+        m.position.set(c.x, c.y, zAt(c.x, c.y)); m.rotation.z = Math.atan2(b.y - a.y, b.x - a.x); m.userData.sx = 1; face.add(m);
+      }
+    }
+    k++;
+  }
+}
+
+/* =====================================================================
+   REGIA DI UN MODELLO
+   ===================================================================== */
+let M = null, cur = 0, phase = 'idle', phaseStart = 0, playAll = false, foldIdx = 0, t = 0;
+const PRE = 800, FOLD = 1400, BETWEEN = 250, HOLD = 1100;
+const $ = id => document.getElementById(id);
+
+const camGoal = { target: V(0,0,0), dist: 5 };
+function boxOf(states){
+  let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+  for (const s of states) for (const f of s) for (const p of f.v){ x0 = Math.min(x0,p.x); x1 = Math.max(x1,p.x); y0 = Math.min(y0,p.y); y1 = Math.max(y1,p.y); }
+  return { cx:(x0+x1)/2, cy:(y0+y1)/2, w:x1-x0, h:y1-y0 };
+}
+function fitDist(box){
+  const tanH = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+  const w = Math.max(box.w, 1.6) + .5, h = Math.max(box.h, 1.6) + .5;
+  return Math.max(w / 2 / (tanH * camera.aspect), h / 2 / tanH) * 1.12;
+}
+// inquadra il passo corrente (il foglio prima e dopo la piega); se jump, senza animazione
+function aimCamera(jump){
+  const box = boxOf(cur === 0 ? [M.states[0]] : [M.states[cur-1], M.states[cur]]);
+  camGoal.target.set(box.cx, box.cy - .08, 0);
+  camGoal.dist = fitDist(box);
+  controls.maxDistance = fitDist(M.box) * 2.2;
+  if (jump){
+    controls.target.copy(camGoal.target);
+    camera.position.copy(camGoal.target).addScaledVector(V(0.06, -0.36, 0.93).normalize(), camGoal.dist);
+    controls.update();
+  }
+}
+function followCamera(){
+  const dir = camera.position.clone().sub(controls.target);
+  const dist = dir.length(); dir.normalize();
+  controls.target.lerp(camGoal.target, .06);
+  const nd = dist + (camGoal.dist - dist) * .06;
+  camera.position.copy(controls.target).addScaledVector(dir, nd);
+}
+let userZoomed = false;
+controls.addEventListener('start', () => { userZoomed = true; });
+
+function openModel(m){
+  M = m;
+  matBack.color.setHex(m.paper);
+  $('mKicker').textContent = `Modello ${m.n}`;
+  $('mTitle').textContent = m.title;
+  $('mMeta').textContent = `${'★'.repeat(m.level)} facile · ${m.time} · ${m.ratio ? '1 foglio A4' : '1 foglio quadrato'}`;
+  document.title = `${m.title} – Origami in 3D`;
+  const dots = $('dots'); dots.innerHTML = '';
+  m.steps.forEach((_, i) => { const b = document.createElement('button'); b.className = 'dot'; b.setAttribute('aria-label', 'Passo ' + i);
+    b.onclick = () => { playAll = false; goTo(i); }; dots.appendChild(b); });
+  $('extra').innerHTML = `<b>Lo sapevi?</b> ${m.sapevi}<br><b>Consiglio:</b> ${m.consiglio}`;
+  $('stage').appendChild(renderer.domElement);
+  resize();
+  $('hint').style.opacity = 1;
+  playAll = false; userZoomed = false; goTo(0); aimCamera(true);
+}
+
+function goTo(i){
+  const last = M.steps.length - 1;
+  cur = Math.max(0, Math.min(last, i));
+  phase = 'pre'; phaseStart = performance.now(); foldIdx = 0; t = 0;
+  $('badge').textContent = cur === last ? '★' : cur;
+  $('steplabel').textContent = cur === 0 ? 'Si comincia' : cur === last ? 'Fatto!' : `Passo ${cur} di ${last - 1}`;
+  $('text').innerHTML = M.steps[cur].text;
+  $('prev').disabled = cur === 0;
+  $('next').textContent = cur === last ? 'Ricomincia ↺' : 'Avanti ▶';
+  $('replay').disabled = !M.plans[cur].length && !M.steps[cur].face;
+  $('extra').style.display = cur === last ? 'block' : 'none';
+  [...$('dots').children].forEach((d, k) => { d.classList.toggle('on', k === cur); d.classList.toggle('done', k < cur); });
+  buildFace(M, cur);
+  userZoomed = false; aimCamera(false);
+}
+
+$('next').onclick = () => { playAll = false; goTo(cur === M.steps.length - 1 ? 0 : cur + 1); };
+$('prev').onclick = () => { playAll = false; goTo(cur - 1); };
+$('replay').onclick = () => { playAll = false; goTo(cur); };
+$('playall').onclick = e => { e.preventDefault(); playAll = true; goTo(0); };
+
+function drawModel(now){
+  const plans = M.plans[cur], el = now - phaseStart;
+  let guideAlpha = 0, plan = plans[foldIdx];
+  if (phase === 'pre'){
+    if (plan){ guideAlpha = Math.min(1, el / 250); if (el > PRE){ phase = 'fold'; phaseStart = now; } }
+    else if (el > 250){ phase = M.steps[cur].face ? 'face' : 'hold'; phaseStart = now; }
+    setPaper(plan ? plan.parts.map(p => p.v) : M.states[cur].map(f => f.v));
+  } else if (phase === 'fold'){
+    t = Math.min(1, el / (plan.all ? FOLD * 1.2 : FOLD));
+    guideAlpha = Math.max(0, 1 - t * 3);
+    setPaper(posePlan(plan, t));
+    if (t >= 1){
+      foldIdx++;
+      if (foldIdx < plans.length){ phase = 'pre'; phaseStart = now + BETWEEN - PRE + 300; }
+      else { phase = M.steps[cur].face ? 'face' : 'hold'; phaseStart = now; }
+    }
+  } else if (phase === 'face'){
+    setPaper(M.states[cur].map(f => f.v));
+    const o = ease(Math.min(1, el / 900));
+    faceMats.forEach(m => m.opacity = o);
+    face.children.forEach(c => c.scale.set(c.userData.sx, .3 + .7 * o, 1));
+    if (el > 900){ phase = 'hold'; phaseStart = now; }
+  } else {
+    setPaper(M.states[cur].map(f => f.v));
+    faceMats.forEach(m => m.opacity = 1);
+    face.children.forEach(c => c.scale.set(c.userData.sx, 1, 1));
+    if (playAll && el > HOLD){ if (cur < M.steps.length - 1) goTo(cur + 1); else playAll = false; }
+  }
+  if (phase === 'pre' || phase === 'fold') face.visible = false; else face.visible = true;
+  showGuide(plan, guideAlpha);
+}
+
+function tick(now){
+  if (M){ drawModel(now); if (!userZoomed) followCamera(); controls.update(); renderer.render(scene, camera); }
+  requestAnimationFrame(tick);
+}
+
+function resize(){
+  const st = $('stage'); const w = st.clientWidth, h = st.clientHeight;
+  if (!w || !h) return;
+  renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+}
+new ResizeObserver(() => { resize(); if (M) aimCamera(true); }).observe($('stage'));
+
+/* =====================================================================
+   INDICE con miniature 3D
+   ===================================================================== */
+function makeThumbs(){
+  const size = 360;
+  const r2 = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+  r2.setSize(size, size, false); r2.shadowMap.enabled = true;
+  const cam = new THREE.PerspectiveCamera(34, 1, .05, 60);
+  const out = {};
+  for (const m of MODELS){
+    matBack.color.setHex(m.paper);
+    const last = m.steps.length - 1;
+    setPaper(m.states[last].map(f => f.v));
+    buildFace(m, last); face.visible = true;
+    faceMats.forEach(x => x.opacity = 1); face.children.forEach(c => c.scale.set(c.userData.sx, 1, 1));
+    foldLine.visible = arrowTube.visible = arrowHead.visible = false;
+    let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+    for (const f of m.states[last]) for (const p of f.v){ x0 = Math.min(x0,p.x); x1 = Math.max(x1,p.x); y0 = Math.min(y0,p.y); y1 = Math.max(y1,p.y); }
+    const c = V((x0+x1)/2, (y0+y1)/2, 0), span = Math.max(x1-x0, y1-y0) + .35;
+    const dist = span / 2 / Math.tan(THREE.MathUtils.degToRad(17));
+    cam.position.copy(c).addScaledVector(V(0.12, -0.42, 0.9).normalize(), dist); cam.lookAt(c);
+    r2.render(scene, cam);
+    out[m.id] = r2.domElement.toDataURL('image/png');
+  }
+  r2.dispose(); face.clear();
+  return out;
+}
+
+function buildIndex(){
+  let thumbs = {};
+  try { thumbs = makeThumbs(); } catch (e) { console.warn(e); }
+  $('grid').innerHTML = MODELS.map(m => `
+    <a class="tile" href="#${m.id}">
+      <div class="thumb">${thumbs[m.id] ? `<img alt="${m.title}" src="${thumbs[m.id]}">` : ''}</div>
+      <div class="info"><div class="num">Modello ${m.n}</div><div class="name">${m.title}</div>
+      <div class="meta">${m.steps.length - 2} passi · ${m.time}</div></div>
+    </a>`).join('');
+}
+
+function route(){
+  const id = location.hash.slice(1);
+  const m = MODELS.find(x => x.id === id);
+  if (m){ $('index').style.display = 'none'; $('model').style.display = 'flex'; document.body.style.overflow = 'hidden'; openModel(m); }
+  else { M = null; $('model').style.display = 'none'; $('index').style.display = 'block'; document.body.style.overflow = ''; document.title = 'Il Mio Primo Libro di Origami – Edizione 3D'; window.scrollTo(0, 0); }
+}
+window.addEventListener('hashchange', route);
+buildIndex();
+route();
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>
